@@ -84,21 +84,27 @@ class Runner:
         self.log_path = self._log_path_for_role(role)
 
         # preferred specialist addresses from env private keys
-        self.main_address = self.w3.eth.account.from_key(os.environ["MAIN_AGENT_PK"]).address
-        self.price_address = self.w3.eth.account.from_key(os.environ["PRICE_AGENT_PK"]).address
-        self.volume_address = self.w3.eth.account.from_key(os.environ["VOLUME_AGENT_PK"]).address
-        self.yield_address = self.w3.eth.account.from_key(os.environ["YIELD_AGENT_PK"]).address
+        self.main_address = self._address_from_env_pk("MAIN_AGENT_PK")
+        self.price_address = self._address_from_env_pk("PRICE_AGENT_PK")
+        self.volume_address = self._address_from_env_pk("VOLUME_AGENT_PK")
+        self.yield_address = self._address_from_env_pk("YIELD_AGENT_PK")
 
     def _private_key_for_role(self, role: str) -> str:
-        mapping = {
-            "main": os.environ["MAIN_AGENT_PK"],
-            "price": os.environ["PRICE_AGENT_PK"],
-            "volume": os.environ["VOLUME_AGENT_PK"],
-            "yield": os.environ["YIELD_AGENT_PK"],
-        }
-        if role not in mapping:
-            raise ValueError(f"Unknown role: {role}")
-        return mapping[role]
+        if role == "main":
+            return os.environ["MAIN_AGENT_PK"]
+        if role == "price":
+            return os.environ["PRICE_AGENT_PK"]
+        if role == "volume":
+            return os.environ["VOLUME_AGENT_PK"]
+        if role == "yield":
+            return os.environ["YIELD_AGENT_PK"]
+        raise ValueError(f"Unsupported role: {role}")
+    
+    def _address_from_env_pk(self, env_key: str) -> Optional[str]:
+        pk = os.environ.get(env_key)
+        if not pk:
+            return None
+        return self.w3.eth.account.from_key(pk).address
 
     def _log_path_for_role(self, role: str) -> Path:
         mapping = {
@@ -230,6 +236,18 @@ class Runner:
                 print(f"[{self.role}] log_api_error={e}")
 
 
+    def _log_safe(self, action: str, details: Optional[Dict[str, Any]] = None, tx_hash: Optional[str] = None) -> None:
+        try:
+            entry: Dict[str, Any] = {
+                "action": action,
+                "details": details or {},
+            }
+            if tx_hash:
+                entry["tx_hash"] = tx_hash
+            self._write_log(entry)
+        except Exception as log_err:
+            print(f"[{self.role}] logging_error={log_err}")
+
 
     def _job_tuple_to_dict(self, raw: Any) -> Dict[str, Any]:
         return {
@@ -296,10 +314,21 @@ class Runner:
             )
 
     def run_forever(self) -> None:
+        import traceback
+
+        self._log_safe("runner_started", {"role": self.role, "poll_seconds": self.poll_seconds})
+
+        main_policy_checked = False
+
         while True:
             try:
+                self._log_safe("poll_cycle_start", {"role": self.role})
+
                 if self.role == "main":
-                    self._ensure_main_policy()
+                    if not main_policy_checked:
+                        self._ensure_main_policy()
+                        self._log_safe("main_policy_checked")
+                        main_policy_checked = True
                     self._tick_main()
                 elif self.role == "price":
                     self._tick_specialist(self.price_cat, "price")
@@ -309,125 +338,190 @@ class Runner:
                     self._tick_specialist(self.yield_cat, "yield")
                 else:
                     raise ValueError(f"Unsupported role: {self.role}")
-            except Exception as e:
-                self._write_log({
-                    "action": "error",
-                    "details": {"message": str(e)},
-                })
 
+                self._log_safe("poll_cycle_complete", {"role": self.role})
+            except Exception as e:
+                traceback.print_exc()
+                self._log_safe("error", {"message": str(e)})
             if self.once:
                 break
-
             time.sleep(self.poll_seconds)
 
     def _tick_main(self) -> None:
+        self._log_safe("main_tick_start")
+
         jobs = self._all_jobs()
+        self._log_safe("main_scan_jobs", {"count": len(jobs)})
 
         # 1) accept matching open top-level jobs
         for job in jobs:
-            if (
-                not job["isSubtask"]
-                and job["status"] == JOB_STATUS["Open"]
-                and job["category"] == self.report_cat
-            ):
-                tx_hash = self._safe_send(
-                    "accept_job",
-                    self.marketplace.functions.acceptJob(job["id"]).build_transaction(
-                        {"from": self.address, "value": 0}
-                    ),
-                    {"job_id": job["id"]},
-                )
-                if tx_hash:
-                    return
+            self._log_safe("inspect_job", {
+                "job_id": job["id"],
+                "status": job["status"],
+                "is_subtask": job["isSubtask"],
+                "assigned_agent": job["assignedAgent"],
+            })
+
+            if job["isSubtask"]:
+                self._log_safe("skip_job_is_subtask", {"job_id": job["id"]})
+                continue
+
+            if job["status"] != JOB_STATUS["Open"]:
+                self._log_safe("skip_job_not_open", {
+                    "job_id": job["id"],
+                    "status": job["status"],
+                })
+                continue
+
+            if job["category"] != self.report_cat:
+                self._log_safe("skip_job_wrong_category", {"job_id": job["id"]})
+                continue
+
+            self._log_safe("attempt_accept_job", {"job_id": job["id"]})
+            tx_hash = self._safe_send(
+                "accept_job",
+                self.marketplace.functions.acceptJob(job["id"]).build_transaction(
+                    {"from": self.address, "value": 0}
+                ),
+                {"job_id": job["id"]},
+            )
+            if tx_hash:
+                return
 
         # 2) for accepted top-level jobs owned by main agent, create missing subtasks
         for job in jobs:
-            if (
-                not job["isSubtask"]
-                and job["status"] == JOB_STATUS["Accepted"]
-                and Web3.to_checksum_address(job["assignedAgent"]) == self.address
-            ):
-                children = self._child_jobs(job["id"])
-                existing_categories = {c["category"] for c in children}
+            if job["isSubtask"]:
+                continue
 
-                subtask_specs = [
-                    (self.price_cat, "ipfs://price-task", self.price_address),
-                    (self.volume_cat, "ipfs://volume-task", self.volume_address),
-                    (self.yield_cat, "ipfs://yield-task", self.yield_address),
-                ]
+            if job["status"] != JOB_STATUS["Accepted"]:
+                continue
 
-                for category, spec_uri, preferred in subtask_specs:
-                    if category in existing_categories:
-                        continue
+            if Web3.to_checksum_address(job["assignedAgent"]) != self.address:
+                self._log_safe("skip_parent_not_owned_by_main", {
+                    "job_id": job["id"],
+                    "assigned_agent": job["assignedAgent"],
+                    "self": self.address,
+                })
+                continue
 
-                    now_ts = int(time.time())
-                    parent_deadline = int(job["deadline"])
-                    proposed_subtask_deadline = now_ts + 12 * 3600
-                    safe_subtask_deadline = min(proposed_subtask_deadline, parent_deadline)
+            self._log_safe("inspect_accepted_parent_for_subtasks", {"job_id": job["id"]})
 
-                    if safe_subtask_deadline <= now_ts:
-                        self._write_log({
-                            "action": "create_subtask_skipped",
-                            "details": {
-                                "parent_job_id": job["id"],
-                                "category_hex": category.hex(),
-                                "preferred_agent": preferred,
-                                "reason": "parent deadline too close or already expired",
-                                "parent_deadline": parent_deadline,
-                                "now": now_ts,
-                            },
-                        })
-                        return
+            children = self._child_jobs(job["id"])
+            self._log_safe("existing_child_jobs", {
+                "job_id": job["id"],
+                "child_count": len(children),
+            })
 
-                    tx_hash = self._safe_send(
-                        "create_subtask",
-                        self.marketplace.functions.createSubtask(
-                            job["id"],
-                            category,
-                            spec_uri,
-                            Web3.to_wei(0.00001, "ether"),
-                            safe_subtask_deadline,
-                            preferred,
-                        ).build_transaction(
-                            {"from": self.address, "value": Web3.to_wei(0.00001, "ether")}
-                        ),
+            existing_categories = {c["category"] for c in children}
+
+            subtask_specs = [
+                (self.price_cat, "ipfs://price-task", self.price_address),
+                (self.volume_cat, "ipfs://volume-task", self.volume_address),
+                (self.yield_cat, "ipfs://yield-task", self.yield_address),
+            ]
+
+            for category, spec_uri, preferred in subtask_specs:
+                if category in existing_categories:
+                    self._log_safe("skip_subtask_already_exists", {
+                        "parent_job_id": job["id"],
+                        "preferred_agent": preferred,
+                    })
+                    continue
+
+                now_ts = int(time.time())
+                parent_deadline = int(job["deadline"])
+                proposed_subtask_deadline = now_ts + 12 * 3600
+                safe_subtask_deadline = min(proposed_subtask_deadline, parent_deadline)
+
+                if safe_subtask_deadline <= now_ts:
+                    self._log_safe(
+                        "create_subtask_skipped",
                         {
                             "parent_job_id": job["id"],
                             "category_hex": category.hex(),
                             "preferred_agent": preferred,
-                            "subtask_deadline": safe_subtask_deadline,
+                            "reason": "parent deadline too close or already expired",
+                            "parent_deadline": parent_deadline,
+                            "now": now_ts,
                         },
                     )
-                    if tx_hash:
-                        return
+                    return
 
-                # 3) complete any submitted subtasks
-                for child in children:
-                    if child["status"] == JOB_STATUS["Submitted"]:
-                        tx_hash = self._safe_send(
-                            "mark_subtask_completed",
-                            self.marketplace.functions.markCompleted(child["id"]).build_transaction(
-                                {"from": self.address}
-                            ),
-                            {"subtask_job_id": child["id"]},
-                        )
-                        if tx_hash:
-                            return
+                self._log_safe("attempt_create_subtask", {
+                    "parent_job_id": job["id"],
+                    "category_hex": category.hex(),
+                    "preferred_agent": preferred,
+                    "subtask_deadline": safe_subtask_deadline,
+                })
 
-                # 4) if all subtasks completed, submit final report
-                children = self._child_jobs(job["id"])
-                if children and all(c["status"] == JOB_STATUS["Completed"] for c in children):
+                tx_hash = self._safe_send(
+                    "create_subtask",
+                    self.marketplace.functions.createSubtask(
+                        job["id"],
+                        category,
+                        spec_uri,
+                        Web3.to_wei(0.00001, "ether"),
+                        safe_subtask_deadline,
+                        preferred,
+                    ).build_transaction(
+                        {"from": self.address, "value": Web3.to_wei(0.00001, "ether")}
+                    ),
+                    {
+                        "parent_job_id": job["id"],
+                        "category_hex": category.hex(),
+                        "preferred_agent": preferred,
+                        "subtask_deadline": safe_subtask_deadline,
+                    },
+                )
+                if tx_hash:
+                    return
+
+            # 3) complete any submitted subtasks
+            for child in children:
+                if child["status"] == JOB_STATUS["Submitted"]:
+                    self._log_safe("attempt_mark_subtask_completed", {
+                        "subtask_job_id": child["id"],
+                        "parent_job_id": job["id"],
+                    })
                     tx_hash = self._safe_send(
-                        "submit_parent_result",
-                        self.marketplace.functions.submitResult(
-                            job["id"],
-                            "ipfs://final-report",
-                        ).build_transaction({"from": self.address}),
-                        {"job_id": job["id"]},
+                        "mark_subtask_completed",
+                        self.marketplace.functions.markCompleted(child["id"]).build_transaction(
+                            {"from": self.address}
+                        ),
+                        {"subtask_job_id": child["id"]},
                     )
                     if tx_hash:
                         return
 
+            # 4) if all subtasks completed, submit final report
+            children = self._child_jobs(job["id"])
+            completed_children = len([c for c in children if c["status"] == JOB_STATUS["Completed"]])
+
+            self._log_safe("child_status_summary", {
+                "job_id": job["id"],
+                "child_count": len(children),
+                "completed_children": completed_children,
+            })
+
+            if children and all(c["status"] == JOB_STATUS["Completed"] for c in children):
+                self._log_safe("attempt_submit_parent_result", {"job_id": job["id"]})
+                tx_hash = self._safe_send(
+                    "submit_parent_result",
+                    self.marketplace.functions.submitResult(
+                        job["id"],
+                        "ipfs://final-report",
+                    ).build_transaction({"from": self.address}),
+                    {"job_id": job["id"]},
+                )
+                if tx_hash:
+                    return
+            else:
+                self._log_safe("skip_parent_not_ready_for_submission", {"job_id": job["id"]})
+
+        self._log_safe("main_tick_complete")
+
+
+    
     def _tick_specialist(self, category: bytes, label: str) -> None:
         jobs = self._all_jobs()
 

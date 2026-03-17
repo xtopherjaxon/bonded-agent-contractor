@@ -1,6 +1,6 @@
 "use client";
 
-import { fetchAllJobs, fetchAgentStats } from "@/lib/contracts";
+import { fetchAllJobs, fetchAgentStats, type UiJob } from "@/lib/contracts";
 
 import React, { useEffect, useMemo, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

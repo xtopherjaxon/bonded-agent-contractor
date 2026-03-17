@@ -551,6 +551,8 @@ export default function BondedAgentDashboard() {
                   </div>
                   <div className="mt-1 text-muted-foreground">
                     Human signer is configured server-side.
+                    Human actions are currently server-signed for demo reliability and frictionless review.
+                    The next production step is wallet-connected human approval.
                   </div>
                 </div>
 

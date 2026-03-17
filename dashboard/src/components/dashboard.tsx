@@ -38,10 +38,10 @@ const short = (value?: string | null) => {
   return `${value.slice(0, 6)}...${value.slice(-4)}`;
 };
 
-const prettyEth = (wei) => {
+const prettyEth = (wei?: string | number | bigint | null) => {
   if (wei == null) return "—";
   const eth = Number(wei) / 1e18;
-  return `${eth.toFixed(3)} ETH`;
+  return `${eth.toFixed(6)} ETH`;
 };
 
 

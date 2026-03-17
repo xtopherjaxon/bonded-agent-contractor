@@ -1540,6 +1540,46 @@
       },
       "tx_hash": "0x297eb85bfa586b797c77c39e723cc460852eaab0d026c6f95a1293063caa3e20",
       "step": 207
+    },
+    {
+      "action": "accept_subtask_and_post_bond",
+      "details": {
+        "job_id": 10,
+        "bond_wei": "2000000000000",
+        "category": "price"
+      },
+      "tx_hash": "0xc90fc30ee1b76114ecaeb6e2bb19d1f32f134d6addd1fafc90f05fc8d8357bd2",
+      "step": 208
+    },
+    {
+      "action": "submit_result",
+      "details": {
+        "job_id": 10,
+        "result_uri": "ipfs://price-result",
+        "category": "price"
+      },
+      "tx_hash": "0x422f902f1bd1a5b7623f78bb40bbb39bec302dc7de9b5dedb54c47544b645032",
+      "step": 209
+    },
+    {
+      "action": "accept_subtask_and_post_bond",
+      "details": {
+        "job_id": 14,
+        "bond_wei": "2000000000000",
+        "category": "price"
+      },
+      "tx_hash": "0x0b0513d41e7092655d3f4aebc0486a09d196deff9ed05ba934d76365364799cf",
+      "step": 210
+    },
+    {
+      "action": "submit_result",
+      "details": {
+        "job_id": 14,
+        "result_uri": "ipfs://price-result",
+        "category": "price"
+      },
+      "tx_hash": "0x6c02ac2906246203e7483fc83a153a258639d4151fe3b914491d04e58a0800a7",
+      "step": 211
     }
   ],
   "tx_hashes": [
@@ -1570,7 +1610,11 @@
     "0xb7d80f7e1b3228d5caf53d6f82880900eb30a93df5f25218ebffde07e4a32e33",
     "0xe24a4fb1f0f42731795c3235114d0a1386da785b618d30d296b86c046f617fb9",
     "0xc85147b22f51e683ba4a61b00144a2c3470480e8c5788ce2fd4aee62ad88a664",
-    "0x297eb85bfa586b797c77c39e723cc460852eaab0d026c6f95a1293063caa3e20"
+    "0x297eb85bfa586b797c77c39e723cc460852eaab0d026c6f95a1293063caa3e20",
+    "0xc90fc30ee1b76114ecaeb6e2bb19d1f32f134d6addd1fafc90f05fc8d8357bd2",
+    "0x422f902f1bd1a5b7623f78bb40bbb39bec302dc7de9b5dedb54c47544b645032",
+    "0x0b0513d41e7092655d3f4aebc0486a09d196deff9ed05ba934d76365364799cf",
+    "0x6c02ac2906246203e7483fc83a153a258639d4151fe3b914491d04e58a0800a7"
   ],
   "final_output": {
     "result_uri": "ipfs://price-data-result"

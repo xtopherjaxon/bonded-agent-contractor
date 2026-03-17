@@ -296,12 +296,10 @@ class Runner:
             )
 
     def run_forever(self) -> None:
-        if self.role == "main":
-            self._ensure_main_policy()
-
         while True:
             try:
                 if self.role == "main":
+                    self._ensure_main_policy()
                     self._tick_main()
                 elif self.role == "price":
                     self._tick_specialist(self.price_cat, "price")
@@ -319,6 +317,7 @@ class Runner:
 
             if self.once:
                 break
+
             time.sleep(self.poll_seconds)
 
     def _tick_main(self) -> None:
@@ -482,18 +481,27 @@ class Runner:
 
 
 def main() -> None:
+    import argparse
+    import traceback
+    import time
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--role", required=True, choices=["main", "price", "volume", "yield"])
     parser.add_argument("--once", action="store_true")
-    parser.add_argument("--poll-seconds", type=int, default=5)
+    parser.add_argument("--poll-seconds", type=int, default=10)
     args = parser.parse_args()
 
-    runner = Runner(role=args.role, once=args.once, poll_seconds=args.poll_seconds)
-    runner.run_forever()
-
-
-if __name__ == "__main__":
-    try:
-        main()
-    except KeyboardInterrupt:
-        sys.exit(0)
+    while True:
+        try:
+            runner = Runner(role=args.role, once=args.once, poll_seconds=args.poll_seconds)
+            runner.run_forever()
+            if args.once:
+                break
+        except KeyboardInterrupt:
+            raise
+        except Exception as e:
+            print(f"[{args.role}] fatal_runner_error={e}")
+            traceback.print_exc()
+            if args.once:
+                raise
+            time.sleep(10)

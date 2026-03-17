@@ -1513,6 +1513,46 @@
       },
       "tx_hash": "0x03ecfe417b6f4abf9a9761b0da1870f2b22a9bc8c9890fb79896c3175ad8cc57",
       "step": 204
+    },
+    {
+      "action": "accept_subtask_and_post_bond",
+      "details": {
+        "job_id": 12,
+        "bond_wei": "2000000000000",
+        "category": "yield"
+      },
+      "tx_hash": "0xee3f036345cbac58a10d73a26aa135205def92622f5c22f7d33740cb67fa087a",
+      "step": 205
+    },
+    {
+      "action": "submit_result",
+      "details": {
+        "job_id": 12,
+        "result_uri": "ipfs://yield-result",
+        "category": "yield"
+      },
+      "tx_hash": "0x01b8581a41d8121cb8472add5e76b0596e8b54ce8e8d458d4c40208d886c400d",
+      "step": 206
+    },
+    {
+      "action": "accept_subtask_and_post_bond",
+      "details": {
+        "job_id": 16,
+        "bond_wei": "2000000000000",
+        "category": "yield"
+      },
+      "tx_hash": "0x36fa1b467a3bbc748531e229c608319bd396459c666c6a0c99587bc5d1059aba",
+      "step": 207
+    },
+    {
+      "action": "submit_result",
+      "details": {
+        "job_id": 16,
+        "result_uri": "ipfs://yield-result",
+        "category": "yield"
+      },
+      "tx_hash": "0x502d195703edaebdf5069e75f508014d235cc478dd8a0384cfe71ec6194af4d5",
+      "step": 208
     }
   ],
   "tx_hashes": [
@@ -1541,7 +1581,11 @@
     "0x917487ef0be82aa8d0cb222032b2e844e3baa7beff0dc44fb5c625345b331023",
     "0xe6bce126e0ff49bcb788e9cb5ecdffff7f7c6f601194b44c366f9d14d899a57a",
     "0x27676e4b7a6274b4e40944846789fa40ba424a743823b34d40f61e6974fef181",
-    "0x03ecfe417b6f4abf9a9761b0da1870f2b22a9bc8c9890fb79896c3175ad8cc57"
+    "0x03ecfe417b6f4abf9a9761b0da1870f2b22a9bc8c9890fb79896c3175ad8cc57",
+    "0xee3f036345cbac58a10d73a26aa135205def92622f5c22f7d33740cb67fa087a",
+    "0x01b8581a41d8121cb8472add5e76b0596e8b54ce8e8d458d4c40208d886c400d",
+    "0x36fa1b467a3bbc748531e229c608319bd396459c666c6a0c99587bc5d1059aba",
+    "0x502d195703edaebdf5069e75f508014d235cc478dd8a0384cfe71ec6194af4d5"
   ],
   "final_output": {
     "result_uri": "ipfs://yield-data-result"

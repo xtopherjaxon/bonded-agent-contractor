@@ -3792,6 +3792,328 @@
       "tx_hash": "0xba0c5bc5077b87a2aaf17036a591d0393a1f6ad95541e359982cf2ac0d17cb52",
       "step": 1141,
       "timestamp": 1773713066285
+    },
+    {
+      "role": "main",
+      "action": "accept_job",
+      "details": {
+        "job_id": 9
+      },
+      "tx_hash": "0x88772894b5ceb622f749a4f4878e462c0f85f8885437506c229a79640b3966fd",
+      "step": 1142,
+      "timestamp": 1773730073762
+    },
+    {
+      "role": "main",
+      "action": "create_subtask",
+      "details": {
+        "parent_job_id": 9,
+        "category_hex": "0x6af8d57439ffc95a5893d7485897e6bc79cda8d8f7ad59da55f23c3028406a38",
+        "preferred_agent": "0x3B93DA6DA26998da057d2997306dE32e97222125",
+        "subtask_deadline": 1773773282
+      },
+      "tx_hash": "0xf1621fb738cefa9d29af1f2967e4cc098561e16a4253584d90b65e4492eaf981",
+      "step": 1143,
+      "timestamp": 1773730084857
+    },
+    {
+      "role": "main",
+      "action": "create_subtask",
+      "details": {
+        "parent_job_id": 9,
+        "category_hex": "0x6a5a6bbc61eee87da7722fbf47558e3abfb4f2f0de82cb61196beacea7683270",
+        "preferred_agent": "0x8e6bEAF605D8cDD36591226c7487ee41aBE8B677",
+        "subtask_deadline": 1773773293
+      },
+      "tx_hash": "0x3f20824ef8007036b5f5e6456f954e0a44924803bd3be5c4a979296f83e62a05",
+      "step": 1144,
+      "timestamp": 1773730095865
+    },
+    {
+      "role": "price",
+      "action": "accept_subtask_and_post_bond",
+      "details": {
+        "job_id": 10,
+        "bond_wei": "2000000000000",
+        "category": "price"
+      },
+      "tx_hash": "0xc90fc30ee1b76114ecaeb6e2bb19d1f32f134d6addd1fafc90f05fc8d8357bd2",
+      "step": 208,
+      "timestamp": 1773730101355
+    },
+    {
+      "role": "main",
+      "action": "create_subtask",
+      "details": {
+        "parent_job_id": 9,
+        "category_hex": "0x89a06dff28f52cee41ea301afe84fa01147a3d9eb01357854221a525ccacf0ea",
+        "preferred_agent": "0x808c89d742e22d805b83e2b40da6471B2353Afaf",
+        "subtask_deadline": 1773773304
+      },
+      "tx_hash": "0xac6659e2e7ce5f29d6f2149f5375d835e921d5dbc8691465a0392ad9efdf39cb",
+      "step": 1145,
+      "timestamp": 1773730106472
+    },
+    {
+      "role": "volume",
+      "action": "accept_subtask_and_post_bond",
+      "details": {
+        "job_id": 11,
+        "bond_wei": "2000000000000",
+        "category": "volume"
+      },
+      "tx_hash": "0x47b17d46e7d4dc8ebfde121cf2d7b49ae779532cae7bcaaa2ad48ad232d16d5e",
+      "step": 205,
+      "timestamp": 1773730110242
+    },
+    {
+      "role": "price",
+      "action": "submit_result",
+      "details": {
+        "job_id": 10,
+        "result_uri": "ipfs://price-result",
+        "category": "price"
+      },
+      "tx_hash": "0x422f902f1bd1a5b7623f78bb40bbb39bec302dc7de9b5dedb54c47544b645032",
+      "step": 209,
+      "timestamp": 1773730112256
+    },
+    {
+      "role": "main",
+      "action": "mark_subtask_completed",
+      "details": {
+        "subtask_job_id": 10
+      },
+      "tx_hash": "0x9c16a2b71c3b461dd70e18815c1df2e8c11a0ee852fb281910f9dea32f5244ae",
+      "step": 1146,
+      "timestamp": 1773730116285
+    },
+    {
+      "role": "yield",
+      "action": "accept_subtask_and_post_bond",
+      "details": {
+        "job_id": 12,
+        "bond_wei": "2000000000000",
+        "category": "yield"
+      },
+      "tx_hash": "0xee3f036345cbac58a10d73a26aa135205def92622f5c22f7d33740cb67fa087a",
+      "step": 205,
+      "timestamp": 1773730116992
+    },
+    {
+      "role": "volume",
+      "action": "submit_result",
+      "details": {
+        "job_id": 11,
+        "result_uri": "ipfs://volume-result",
+        "category": "volume"
+      },
+      "tx_hash": "0x46014adeca8622b8706aaefe02d168925d0c8214b719b8ffc530248e0420325c",
+      "step": 206,
+      "timestamp": 1773730121599
+    },
+    {
+      "role": "main",
+      "action": "mark_subtask_completed",
+      "details": {
+        "subtask_job_id": 11
+      },
+      "tx_hash": "0x540cec9f7a72102015a1169acbcdfa22889d53e59a3d040eb793c8b975cc5e11",
+      "step": 1147,
+      "timestamp": 1773730126352
+    },
+    {
+      "role": "yield",
+      "action": "submit_result",
+      "details": {
+        "job_id": 12,
+        "result_uri": "ipfs://yield-result",
+        "category": "yield"
+      },
+      "tx_hash": "0x01b8581a41d8121cb8472add5e76b0596e8b54ce8e8d458d4c40208d886c400d",
+      "step": 206,
+      "timestamp": 1773730128536
+    },
+    {
+      "role": "main",
+      "action": "mark_subtask_completed",
+      "details": {
+        "subtask_job_id": 12
+      },
+      "tx_hash": "0xa4fcb2f551d9f39586a09f653c19d95af6d0d9c5735a80318cc87757ce4ade74",
+      "step": 1148,
+      "timestamp": 1773730137626
+    },
+    {
+      "role": "main",
+      "action": "submit_parent_result",
+      "details": {
+        "job_id": 9
+      },
+      "tx_hash": "0xa8c5a139538b746bc345b306f4b5833e65cb0d545cca3e3f011cd7663c9ca584",
+      "step": 1149,
+      "timestamp": 1773730149389
+    },
+    {
+      "role": "main",
+      "action": "accept_job",
+      "details": {
+        "job_id": 13
+      },
+      "tx_hash": "0x1cbcae78366cc9ec65a01b56084b451cf6c43ba4be40f6e59e199b1cdbb3fb1b",
+      "step": 1150,
+      "timestamp": 1773733895479
+    },
+    {
+      "role": "main",
+      "action": "create_subtask",
+      "details": {
+        "parent_job_id": 13,
+        "category_hex": "0x6af8d57439ffc95a5893d7485897e6bc79cda8d8f7ad59da55f23c3028406a38",
+        "preferred_agent": "0x3B93DA6DA26998da057d2997306dE32e97222125",
+        "subtask_deadline": 1773737483
+      },
+      "tx_hash": "0x56dcfc1f6539d74a09d94b84b1bce4930e635b94225a6b3a7a60297abfc6370f",
+      "step": 1151,
+      "timestamp": 1773733905484
+    },
+    {
+      "role": "price",
+      "action": "accept_subtask_and_post_bond",
+      "details": {
+        "job_id": 14,
+        "bond_wei": "2000000000000",
+        "category": "price"
+      },
+      "tx_hash": "0x0b0513d41e7092655d3f4aebc0486a09d196deff9ed05ba934d76365364799cf",
+      "step": 210,
+      "timestamp": 1773733915262
+    },
+    {
+      "role": "main",
+      "action": "create_subtask",
+      "details": {
+        "parent_job_id": 13,
+        "category_hex": "0x6a5a6bbc61eee87da7722fbf47558e3abfb4f2f0de82cb61196beacea7683270",
+        "preferred_agent": "0x8e6bEAF605D8cDD36591226c7487ee41aBE8B677",
+        "subtask_deadline": 1773737483
+      },
+      "tx_hash": "0xe88fdfbb13ff327693dc9423cc5fb4f043c7a0aca722ffa1a0038564e447bc2c",
+      "step": 1152,
+      "timestamp": 1773733915533
+    },
+    {
+      "role": "volume",
+      "action": "accept_subtask_and_post_bond",
+      "details": {
+        "job_id": 15,
+        "bond_wei": "2000000000000",
+        "category": "volume"
+      },
+      "tx_hash": "0x5493716c77c92dbc1478060a9308140d2d96d210e790a6bc079fa71a8b96671b",
+      "step": 207,
+      "timestamp": 1773733924177
+    },
+    {
+      "role": "main",
+      "action": "create_subtask",
+      "details": {
+        "parent_job_id": 13,
+        "category_hex": "0x89a06dff28f52cee41ea301afe84fa01147a3d9eb01357854221a525ccacf0ea",
+        "preferred_agent": "0x808c89d742e22d805b83e2b40da6471B2353Afaf",
+        "subtask_deadline": 1773737483
+      },
+      "tx_hash": "0xaace8d459b147ee629be04b156bd53e78f4e0a4f23c675ee367286be1e24a80e",
+      "step": 1153,
+      "timestamp": 1773733925449
+    },
+    {
+      "role": "price",
+      "action": "submit_result",
+      "details": {
+        "job_id": 14,
+        "result_uri": "ipfs://price-result",
+        "category": "price"
+      },
+      "tx_hash": "0x6c02ac2906246203e7483fc83a153a258639d4151fe3b914491d04e58a0800a7",
+      "step": 211,
+      "timestamp": 1773733927116
+    },
+    {
+      "role": "yield",
+      "action": "accept_subtask_and_post_bond",
+      "details": {
+        "job_id": 16,
+        "bond_wei": "2000000000000",
+        "category": "yield"
+      },
+      "tx_hash": "0x36fa1b467a3bbc748531e229c608319bd396459c666c6a0c99587bc5d1059aba",
+      "step": 207,
+      "timestamp": 1773733934096
+    },
+    {
+      "role": "main",
+      "action": "mark_subtask_completed",
+      "details": {
+        "subtask_job_id": 14
+      },
+      "tx_hash": "0x84a4c94d03bf93fa3144477561f40f6eabb8de6dec15f59252a151add90a5756",
+      "step": 1154,
+      "timestamp": 1773733936228
+    },
+    {
+      "role": "volume",
+      "action": "submit_result",
+      "details": {
+        "job_id": 15,
+        "result_uri": "ipfs://volume-result",
+        "category": "volume"
+      },
+      "tx_hash": "0x735c0ee67a1eb54c17e481c93b0aa1f90672a258f8bf6b571fda826d9284383b",
+      "step": 208,
+      "timestamp": 1773733936579
+    },
+    {
+      "role": "yield",
+      "action": "submit_result",
+      "details": {
+        "job_id": 16,
+        "result_uri": "ipfs://yield-result",
+        "category": "yield"
+      },
+      "tx_hash": "0x502d195703edaebdf5069e75f508014d235cc478dd8a0384cfe71ec6194af4d5",
+      "step": 208,
+      "timestamp": 1773733946313
+    },
+    {
+      "role": "main",
+      "action": "mark_subtask_completed",
+      "details": {
+        "subtask_job_id": 15
+      },
+      "tx_hash": "0x303f138a9559f075e7de28ce2293a8e8f149d07d6d3c2fea9c3bce27c95ba19b",
+      "step": 1155,
+      "timestamp": 1773733947136
+    },
+    {
+      "role": "main",
+      "action": "mark_subtask_completed",
+      "details": {
+        "subtask_job_id": 16
+      },
+      "tx_hash": "0x20ad58c841618c9473e98ea595eda0fef3e1e446a9f2805698be2966087996be",
+      "step": 1156,
+      "timestamp": 1773733958187
+    },
+    {
+      "role": "main",
+      "action": "submit_parent_result",
+      "details": {
+        "job_id": 13
+      },
+      "tx_hash": "0x85e8ee0465164bb1a88c962a4a925327e39743e8d1369ab6c790bd9679b7fbaa",
+      "step": 1157,
+      "timestamp": 1773733972466
     }
   ]
 }

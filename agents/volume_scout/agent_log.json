@@ -1513,6 +1513,46 @@
       },
       "tx_hash": "0x30b7510eba8c316ad6e805e7e84144f6f4348af73be7678775dde4630e29b40a",
       "step": 204
+    },
+    {
+      "action": "accept_subtask_and_post_bond",
+      "details": {
+        "job_id": 11,
+        "bond_wei": "2000000000000",
+        "category": "volume"
+      },
+      "tx_hash": "0x47b17d46e7d4dc8ebfde121cf2d7b49ae779532cae7bcaaa2ad48ad232d16d5e",
+      "step": 205
+    },
+    {
+      "action": "submit_result",
+      "details": {
+        "job_id": 11,
+        "result_uri": "ipfs://volume-result",
+        "category": "volume"
+      },
+      "tx_hash": "0x46014adeca8622b8706aaefe02d168925d0c8214b719b8ffc530248e0420325c",
+      "step": 206
+    },
+    {
+      "action": "accept_subtask_and_post_bond",
+      "details": {
+        "job_id": 15,
+        "bond_wei": "2000000000000",
+        "category": "volume"
+      },
+      "tx_hash": "0x5493716c77c92dbc1478060a9308140d2d96d210e790a6bc079fa71a8b96671b",
+      "step": 207
+    },
+    {
+      "action": "submit_result",
+      "details": {
+        "job_id": 15,
+        "result_uri": "ipfs://volume-result",
+        "category": "volume"
+      },
+      "tx_hash": "0x735c0ee67a1eb54c17e481c93b0aa1f90672a258f8bf6b571fda826d9284383b",
+      "step": 208
     }
   ],
   "tx_hashes": [
@@ -1541,7 +1581,11 @@
     "0xab27f056bd346dc4a0e85541ec4351e125fe29af9e1a226d6a4eaf93fd0dca0e",
     "0x9315f246a0afc4d1eac93c30393293b460f15570ea7a6d94bfe585f77ad5ea92",
     "0xb4cfcad3b45db76a66e640253a7171e5652e6af6e0903565c947b417724b3d95",
-    "0x30b7510eba8c316ad6e805e7e84144f6f4348af73be7678775dde4630e29b40a"
+    "0x30b7510eba8c316ad6e805e7e84144f6f4348af73be7678775dde4630e29b40a",
+    "0x47b17d46e7d4dc8ebfde121cf2d7b49ae779532cae7bcaaa2ad48ad232d16d5e",
+    "0x46014adeca8622b8706aaefe02d168925d0c8214b719b8ffc530248e0420325c",
+    "0x5493716c77c92dbc1478060a9308140d2d96d210e790a6bc079fa71a8b96671b",
+    "0x735c0ee67a1eb54c17e481c93b0aa1f90672a258f8bf6b571fda826d9284383b"
   ],
   "final_output": {
     "result_uri": "ipfs://volume-data-result"

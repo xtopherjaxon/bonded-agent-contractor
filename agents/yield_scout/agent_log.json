@@ -1,0 +1,1549 @@
+{
+  "run_id": "run-yield-001",
+  "agent_name": "YieldScout",
+  "job_id": 4,
+  "parent_job_id": 1,
+  "status": "success",
+  "budget": {
+    "max_steps": 10,
+    "steps_used": 3,
+    "bond_posted_wei": "60000000000000000"
+  },
+  "steps": [
+    {
+      "step": 1,
+      "action": "discover_subtask",
+      "details": {
+        "job_id": 4,
+        "category": "yield_data",
+        "reward_wei": "200000000000000000"
+      }
+    },
+    {
+      "step": 2,
+      "action": "accept_subtask_and_post_bond",
+      "details": {
+        "job_id": 4,
+        "bond_wei": "60000000000000000"
+      }
+    },
+    {
+      "step": 3,
+      "action": "submit_result",
+      "details": {
+        "job_id": 4,
+        "result_uri": "ipfs://yield-data-result"
+      }
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Unknown kwargs: ['gasPrice']"
+      },
+      "step": 4
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Unknown kwargs: ['gasPrice']"
+      },
+      "step": 5
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Unknown kwargs: ['gasPrice']"
+      },
+      "step": 6
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Unknown kwargs: ['gasPrice']"
+      },
+      "step": 7
+    },
+    {
+      "action": "accept_subtask_and_post_bond",
+      "details": {
+        "job_id": 8,
+        "bond_wei": "40000000000000000",
+        "category": "yield"
+      },
+      "tx_hash": "0x3233c10988ce30587343ff79ff0ee0fc8fa5d922095be4380e23a46fb2ba0806",
+      "step": 8
+    },
+    {
+      "action": "submit_result",
+      "details": {
+        "job_id": 8,
+        "result_uri": "ipfs://yield-result",
+        "category": "yield"
+      },
+      "tx_hash": "0xbc64400f321f9db5da0d92e11cb054f2b7a3f9b426ff20f50445cf97baeaf97a",
+      "step": 9
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "HTTPConnectionPool(host='127.0.0.1', port=8545): Max retries exceeded with url: / (Caused by NewConnectionError(\"HTTPConnection(host='127.0.0.1', port=8545): Failed to establish a new connection: [Errno 61] Connection refused\"))"
+      },
+      "step": 10
+    },
+    {
+      "action": "accept_subtask_and_post_bond",
+      "details": {
+        "job_id": 8,
+        "bond_wei": "40000000000000000",
+        "category": "yield"
+      },
+      "tx_hash": "0xe0eb567ff152d955dbb49af69959676bbc827945ae649b11b0ae572fbf12486e",
+      "step": 11
+    },
+    {
+      "action": "submit_result",
+      "details": {
+        "job_id": 8,
+        "result_uri": "ipfs://yield-result",
+        "category": "yield"
+      },
+      "tx_hash": "0x71f65c3d826acea1d152fc6a9be1d5e7cdfd3e8d9f612a4584fe8ff5f3b28561",
+      "step": 12
+    },
+    {
+      "action": "accept_subtask_and_post_bond",
+      "details": {
+        "job_id": 12,
+        "bond_wei": "40000000000000000",
+        "category": "yield"
+      },
+      "tx_hash": "0xecd43ad9969bcb4428721c5e80c293e42d9626d4f36f5c8398fc02cbcb035e30",
+      "step": 13
+    },
+    {
+      "action": "submit_result",
+      "details": {
+        "job_id": 12,
+        "result_uri": "ipfs://yield-result",
+        "category": "yield"
+      },
+      "tx_hash": "0x0e87d5b6322ddf5abcadc541fdd45aedd7028c264c0c27b8a49858832392fa89",
+      "step": 14
+    },
+    {
+      "action": "accept_subtask_and_post_bond",
+      "details": {
+        "job_id": 18,
+        "bond_wei": "40000000000000000",
+        "category": "yield"
+      },
+      "tx_hash": "0xad48cd3fe5c55a1f971c779c1caf817629e9375a4c7a4dab6ff3393f20383166",
+      "step": 15
+    },
+    {
+      "action": "submit_result",
+      "details": {
+        "job_id": 18,
+        "result_uri": "ipfs://yield-result",
+        "category": "yield"
+      },
+      "tx_hash": "0x50d32ee107c0e6a24fe4afa775495b17db3f62bde635a0c7b828ff3c75e32ded",
+      "step": 16
+    },
+    {
+      "action": "accept_subtask_and_post_bond",
+      "details": {
+        "job_id": 21,
+        "bond_wei": "20000000000000000",
+        "category": "yield"
+      },
+      "tx_hash": "0xad32f424be7a11b4c21752b17786c0e1e1f900c2021be4a91cb43bcfad730549",
+      "step": 17
+    },
+    {
+      "action": "submit_result",
+      "details": {
+        "job_id": 21,
+        "result_uri": "ipfs://yield-result",
+        "category": "yield"
+      },
+      "tx_hash": "0x6542df2f2acd29eadbde7ea16411a6106cd2b8efbeb16d24d644ed0bdd2411e9",
+      "step": 18
+    },
+    {
+      "action": "accept_subtask_and_post_bond",
+      "details": {
+        "job_id": 24,
+        "bond_wei": "20000000000000000",
+        "category": "yield"
+      },
+      "tx_hash": "0xc013ec7835cf85c6d52cf4df799cf94b8c54a8a70b36a708439f933ae6d9e257",
+      "step": 19
+    },
+    {
+      "action": "submit_result",
+      "details": {
+        "job_id": 24,
+        "result_uri": "ipfs://yield-result",
+        "category": "yield"
+      },
+      "tx_hash": "0xf021f8e1bc49303cfb2ebcbd2a115e2576ad45f86166c68b44b5f0e5940f9368",
+      "step": 20
+    },
+    {
+      "action": "accept_subtask_and_post_bond",
+      "details": {
+        "job_id": 28,
+        "bond_wei": "20000000000000000",
+        "category": "yield"
+      },
+      "tx_hash": "0xc3171c9e5ca7d882a50eaf42c17dfec799e51ca20e79fe8a0386e0a2ac8106fa",
+      "step": 21
+    },
+    {
+      "action": "submit_result",
+      "details": {
+        "job_id": 28,
+        "result_uri": "ipfs://yield-result",
+        "category": "yield"
+      },
+      "tx_hash": "0x7bd9783074990d9a5476487c00dc69c5837f413979673f54fd586e9ccdba4900",
+      "step": 22
+    },
+    {
+      "action": "accept_subtask_and_post_bond",
+      "details": {
+        "job_id": 32,
+        "bond_wei": "20000000000000000",
+        "category": "yield"
+      },
+      "tx_hash": "0xf5374b66ae7d2aa2f94c36e864fcf93418466e38d69937be79a333367007059c",
+      "step": 23
+    },
+    {
+      "action": "submit_result",
+      "details": {
+        "job_id": 32,
+        "result_uri": "ipfs://yield-result",
+        "category": "yield"
+      },
+      "tx_hash": "0x87152ed4087cf6f756114f818252c9be0d578632b245474c99c10bbc6a146a7c",
+      "step": 24
+    },
+    {
+      "action": "accept_subtask_and_post_bond",
+      "details": {
+        "job_id": 36,
+        "bond_wei": "20000000000000000",
+        "category": "yield"
+      },
+      "tx_hash": "0x93a717642743108576bf298dc988ded92bb18338f35755a233b969bc13e42ed8",
+      "step": 25
+    },
+    {
+      "action": "submit_result",
+      "details": {
+        "job_id": 36,
+        "result_uri": "ipfs://yield-result",
+        "category": "yield"
+      },
+      "tx_hash": "0xc0012ef7244101cd4a88d1e5d83f38811ec2d0490bd59f2411e899a30136753a",
+      "step": 26
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 27
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 28
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 29
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 30
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 31
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 32
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 33
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 34
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 35
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 36
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 37
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 38
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 39
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 40
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 41
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 42
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 43
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 44
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 45
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 46
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 47
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 48
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 49
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 50
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 51
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 52
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 53
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 54
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 55
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 56
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 57
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 58
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 59
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 60
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 61
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 62
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 63
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 64
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 65
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 66
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 67
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 68
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 69
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 70
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 71
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 72
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 73
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 74
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 75
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 76
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 77
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 78
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 79
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 80
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 81
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 82
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 83
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 84
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 85
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 86
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 87
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 88
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 89
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 90
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 91
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 92
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 93
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 94
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 95
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 96
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 97
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 98
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 99
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 100
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 101
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 102
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 103
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 104
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 105
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 106
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 107
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 108
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 109
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 110
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 111
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 112
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 113
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 114
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 115
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 116
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 117
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 118
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 119
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 120
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 121
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 122
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 123
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 124
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 125
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 126
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 127
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 128
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 129
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 130
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 131
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 132
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 133
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 134
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 135
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 136
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 137
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 138
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 139
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 140
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 141
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 142
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 143
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 144
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 145
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 146
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 147
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 148
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 149
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 150
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 151
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 152
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 153
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 154
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 155
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 156
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 157
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 158
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 159
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 160
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 161
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 162
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 163
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 164
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 165
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 166
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 167
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 168
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 169
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 170
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 171
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 172
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 173
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 174
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 175
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 176
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 177
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 178
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 179
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 180
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 181
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 182
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 183
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 184
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 185
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 186
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 187
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 188
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 189
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 190
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 191
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 192
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 193
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 194
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 195
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 196
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 197
+    },
+    {
+      "action": "error",
+      "details": {
+        "message": "Could not transact with/call contract function, is contract deployed correctly and chain synced?"
+      },
+      "step": 198
+    },
+    {
+      "action": "accept_subtask_and_post_bond",
+      "details": {
+        "job_id": 8,
+        "bond_wei": "40000000000000000",
+        "category": "yield"
+      },
+      "tx_hash": "0x88de7bbdbc6cc4e0f32469ab9bf374fe90130df918b1e258dd7ed612fd1b1df9",
+      "step": 199
+    },
+    {
+      "action": "submit_result",
+      "details": {
+        "job_id": 8,
+        "result_uri": "ipfs://yield-result",
+        "category": "yield"
+      },
+      "tx_hash": "0x7751cc2a90d0cbd8ed1f10dc5f06b2367793eb85ae6463723eed741672d46d1a",
+      "step": 200
+    },
+    {
+      "action": "accept_subtask_and_post_bond",
+      "details": {
+        "job_id": 5,
+        "bond_wei": "3000000000000",
+        "category": "yield"
+      },
+      "tx_hash": "0x917487ef0be82aa8d0cb222032b2e844e3baa7beff0dc44fb5c625345b331023",
+      "step": 201
+    },
+    {
+      "action": "submit_result",
+      "details": {
+        "job_id": 5,
+        "result_uri": "ipfs://yield-result",
+        "category": "yield"
+      },
+      "tx_hash": "0xe6bce126e0ff49bcb788e9cb5ecdffff7f7c6f601194b44c366f9d14d899a57a",
+      "step": 202
+    },
+    {
+      "action": "accept_subtask_and_post_bond",
+      "details": {
+        "job_id": 8,
+        "bond_wei": "2000000000000",
+        "category": "yield"
+      },
+      "tx_hash": "0x27676e4b7a6274b4e40944846789fa40ba424a743823b34d40f61e6974fef181",
+      "step": 203
+    },
+    {
+      "action": "submit_result",
+      "details": {
+        "job_id": 8,
+        "result_uri": "ipfs://yield-result",
+        "category": "yield"
+      },
+      "tx_hash": "0x03ecfe417b6f4abf9a9761b0da1870f2b22a9bc8c9890fb79896c3175ad8cc57",
+      "step": 204
+    }
+  ],
+  "tx_hashes": [
+    "0xYIELD_ACCEPT_TX",
+    "0xYIELD_RESULT_TX",
+    "0x3233c10988ce30587343ff79ff0ee0fc8fa5d922095be4380e23a46fb2ba0806",
+    "0xbc64400f321f9db5da0d92e11cb054f2b7a3f9b426ff20f50445cf97baeaf97a",
+    "0xe0eb567ff152d955dbb49af69959676bbc827945ae649b11b0ae572fbf12486e",
+    "0x71f65c3d826acea1d152fc6a9be1d5e7cdfd3e8d9f612a4584fe8ff5f3b28561",
+    "0xecd43ad9969bcb4428721c5e80c293e42d9626d4f36f5c8398fc02cbcb035e30",
+    "0x0e87d5b6322ddf5abcadc541fdd45aedd7028c264c0c27b8a49858832392fa89",
+    "0xad48cd3fe5c55a1f971c779c1caf817629e9375a4c7a4dab6ff3393f20383166",
+    "0x50d32ee107c0e6a24fe4afa775495b17db3f62bde635a0c7b828ff3c75e32ded",
+    "0xad32f424be7a11b4c21752b17786c0e1e1f900c2021be4a91cb43bcfad730549",
+    "0x6542df2f2acd29eadbde7ea16411a6106cd2b8efbeb16d24d644ed0bdd2411e9",
+    "0xc013ec7835cf85c6d52cf4df799cf94b8c54a8a70b36a708439f933ae6d9e257",
+    "0xf021f8e1bc49303cfb2ebcbd2a115e2576ad45f86166c68b44b5f0e5940f9368",
+    "0xc3171c9e5ca7d882a50eaf42c17dfec799e51ca20e79fe8a0386e0a2ac8106fa",
+    "0x7bd9783074990d9a5476487c00dc69c5837f413979673f54fd586e9ccdba4900",
+    "0xf5374b66ae7d2aa2f94c36e864fcf93418466e38d69937be79a333367007059c",
+    "0x87152ed4087cf6f756114f818252c9be0d578632b245474c99c10bbc6a146a7c",
+    "0x93a717642743108576bf298dc988ded92bb18338f35755a233b969bc13e42ed8",
+    "0xc0012ef7244101cd4a88d1e5d83f38811ec2d0490bd59f2411e899a30136753a",
+    "0x88de7bbdbc6cc4e0f32469ab9bf374fe90130df918b1e258dd7ed612fd1b1df9",
+    "0x7751cc2a90d0cbd8ed1f10dc5f06b2367793eb85ae6463723eed741672d46d1a",
+    "0x917487ef0be82aa8d0cb222032b2e844e3baa7beff0dc44fb5c625345b331023",
+    "0xe6bce126e0ff49bcb788e9cb5ecdffff7f7c6f601194b44c366f9d14d899a57a",
+    "0x27676e4b7a6274b4e40944846789fa40ba424a743823b34d40f61e6974fef181",
+    "0x03ecfe417b6f4abf9a9761b0da1870f2b22a9bc8c9890fb79896c3175ad8cc57"
+  ],
+  "final_output": {
+    "result_uri": "ipfs://yield-data-result"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@coinbase/cdp-sdk": "^1.45.0",
+    "jsonwebtoken": "^9.0.3"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "anvil": {
+    "chain": "anvil",
+    "rpc": "http://127.0.0.1:8545",
+    "contracts": {
+      "jobMarketplace": "",
+      "agentDirectory": "",
+      "spendingPolicy": "",
+      "escrowBond": ""
+    },
+    "agents": {
+      "main": "",
+      "price": "",
+      "volume": "",
+      "yield": ""
+    }
+  },
+  "baseSepolia": {
+    "chain": "base-sepolia",
+    "rpc": "https://base-sepolia.g.alchemy.com/v2/DHmQe5E5my4CnTlddRXyZ",
+    "contracts": {
+      "jobMarketplace": "0xcB92AF9D683de4835002A1f90931aD0BCF6D8951",
+      "agentDirectory": "0x5366e9A276D02b30D0631E9F32eD4375165eB939",
+      "spendingPolicy": "0xe6d543d5519882E1A4833B76Be337Eb002Df8336",
+      "escrowBond": "0x8Be79F841938eCC300585600a99CDb3a67f539be"
+    },
+    "agents": {
+      "main": "0x727a2483C4F90CA03FB1a8Db16d9ED86e86FB8Dc",
+      "price": "0x3B93DA6DA26998da057d2997306dE32e97222125",
+      "volume": "0x8e6bEAF605D8cDD36591226c7487ee41aBE8B677",
+      "yield": "0x808c89d742e22d805b83e2b40da6471B2353Afaf"
+    }
+  }
+}

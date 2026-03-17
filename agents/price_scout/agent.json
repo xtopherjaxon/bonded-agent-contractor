@@ -1,0 +1,31 @@
+{
+  "agent_name": "PriceScout",
+  "agent_wallet": "0xPRICE_AGENT",
+  "operator_wallet": "0xPRICE_OPERATOR",
+  "erc8004_identity": "0xERC8004_PRICE",
+  "description": "Specialist data agent that accepts price_data subtasks, posts bonds, submits structured results, and builds reputation through successful bonded work.",
+  "supported_categories": [
+    "price_data"
+  ],
+  "supported_tools": [
+    "JobMarketplace",
+    "EscrowBond"
+  ],
+  "tech_stack": [
+    "Solidity",
+    "Foundry",
+    "Python"
+  ],
+  "compute_constraints": {
+    "max_steps": 10,
+    "max_subtasks_per_job": 1,
+    "max_single_payment_wei": "200000000000000000"
+  },
+  "pricing": {
+    "base_task_price_wei": "20000000000000000"
+  },
+  "trust_model": {
+    "bond_required": true,
+    "uses_reputation": true
+  }
+}

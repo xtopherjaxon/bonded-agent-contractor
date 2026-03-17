@@ -1,0 +1,35 @@
+{
+  "agent_name": "MainContractor",
+  "agent_wallet": "0xMAIN_AGENT",
+  "operator_wallet": "0xOPERATOR",
+  "erc8004_identity": "0xERC8004_MAIN",
+  "description": "Autonomous contractor agent that discovers jobs, decomposes them into subtasks, hires specialist agents, verifies outputs, and submits final results onchain.",
+  "supported_categories": [
+    "eth_market_report"
+  ],
+  "supported_tools": [
+    "JobMarketplace",
+    "AgentDirectory",
+    "EscrowBond",
+    "SpendingPolicy"
+  ],
+  "tech_stack": [
+    "Solidity",
+    "Foundry",
+    "Python"
+  ],
+  "compute_constraints": {
+    "max_steps": 20,
+    "max_subtasks_per_job": 3,
+    "max_daily_spend_wei": "2000000000000000000",
+    "max_single_payment_wei": "1000000000000000000"
+  },
+  "pricing": {
+    "base_task_price_wei": "100000000000000000"
+  },
+  "trust_model": {
+    "bond_required": false,
+    "uses_reputation": true,
+    "subcontracts_to_bonded_agents": true
+  }
+}

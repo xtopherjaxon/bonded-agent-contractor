@@ -33,7 +33,7 @@ const statusTone = {
   Cancelled: "destructive",
 };
 
-const short = (value) => {
+const short = (value?: string | null) => {
   if (!value) return "—";
   return `${value.slice(0, 6)}...${value.slice(-4)}`;
 };
@@ -391,7 +391,6 @@ export default function BondedAgentDashboard() {
       setIsCreating(false);
     }
   };
-
 
 
   const approveParent = async () => {

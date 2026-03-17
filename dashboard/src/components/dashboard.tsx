@@ -243,7 +243,7 @@ const demoAgents = [
   { name: "YieldScout", address: "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc", role: "yield", reputation: 10, bondedCompleted: 1, bondTier: "20%" },
 ];
 
-function StatusBadge({ status }) {
+function StatusBadge({ status }: { status: number }) {
   const label = STATUS[status] || "Unknown";
   return <Badge variant={statusTone[label] || "secondary"}>{label}</Badge>;
 }

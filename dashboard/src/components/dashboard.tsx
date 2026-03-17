@@ -13,7 +13,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Activity, CheckCircle2, Clock3, Shield, Wallet, AlertTriangle, RefreshCcw, FileText, Link2 } from "lucide-react";
 
-const STATUS = {
+const STATUS: Record<number, string> = {
   0: "None",
   1: "Open",
   2: "Accepted",

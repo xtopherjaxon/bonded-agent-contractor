@@ -141,13 +141,15 @@ const isParentCompleted = (job: any) =>
 
 
 const categoryLabel = (hex?: string | null) => {
-  const map = {
+  const map: Record<string, string> = {
     "0xb635b0ee6e4c15c18d1b36f84d92442e53da477ae300027dd06478d4ee0559db": "eth_market_report",
     "0x6af8d57439ffc95a5893d7485897e6bc79cda8d8f7ad59da55f23c3028406a38": "price_data",
     "0x6a5a6bbc61eee87da7722fbf47558e3abfb4f2f0de82cb61196beacea7683270": "volume_data",
     "0x89a06dff28f52cee41ea301afe84fa01147a3d9eb01357854221a525ccacf0ea": "yield_data",
   };
-  return map[hex] || short(hex);
+
+  if (!hex) return "unknown";
+  return map[hex.toLowerCase()] || short(hex);
 };
 
 const demoJobs = [

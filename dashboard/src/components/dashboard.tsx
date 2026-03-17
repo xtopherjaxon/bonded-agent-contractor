@@ -23,7 +23,7 @@ const STATUS: Record<number, string> = {
   6: "Cancelled",
 };
 
-const statusTone = {
+const statusTone: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
   None: "secondary",
   Open: "secondary",
   Accepted: "default",

@@ -161,7 +161,7 @@ export async function fetchAllJobs(): Promise<UiJob[]> {
 
   const jobs: UiJob[] = [];
 
-  for (let id = 1n; id < nextJobId; id++) {
+  for (let id = BigInt(1); id < nextJobId; id++) {
     const raw = await publicClient.readContract({
       address: JOB_MARKETPLACE_ADDRESS,
       abi: jobMarketplaceAbi,

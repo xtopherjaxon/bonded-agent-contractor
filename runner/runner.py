@@ -53,22 +53,22 @@ class Runner:
         self.once = once
         self.poll_seconds = poll_seconds
 
-        rpc_url = os.environ["RPC_URL"]
+        rpc_url = self._require_env("RPC_URL")
         self.w3 = Web3(Web3.HTTPProvider(rpc_url))
 
         if not self.w3.is_connected():
             raise RuntimeError(f"Could not connect to RPC: {rpc_url}")
 
         self.marketplace = self._contract(
-            os.environ["JOB_MARKETPLACE_ADDRESS"],
+            self._require_env("JOB_MARKETPLACE_ADDRESS"),
             load_abi("JobMarketplace"),
         )
         self.directory = self._contract(
-            os.environ["AGENT_DIRECTORY_ADDRESS"],
+            self._require_env("AGENT_DIRECTORY_ADDRESS"),
             load_abi("AgentDirectory"),
         )
         self.policy = self._contract(
-            os.environ["SPENDING_POLICY_ADDRESS"],
+            self._require_env("SPENDING_POLICY_ADDRESS"),
             load_abi("SpendingPolicy"),
         )
 
@@ -89,15 +89,21 @@ class Runner:
         self.volume_address = self._address_from_env_pk("VOLUME_AGENT_PK")
         self.yield_address = self._address_from_env_pk("YIELD_AGENT_PK")
 
+    def _require_env(self, key: str) -> str:
+        value = os.environ.get(key)
+        if not value:
+            raise RuntimeError(f"Missing required environment variable: {key}")
+        return value
+
     def _private_key_for_role(self, role: str) -> str:
         if role == "main":
-            return os.environ["MAIN_AGENT_PK"]
+            return self._require_env("MAIN_AGENT_PK")
         if role == "price":
-            return os.environ["PRICE_AGENT_PK"]
+            return self._require_env("PRICE_AGENT_PK")
         if role == "volume":
-            return os.environ["VOLUME_AGENT_PK"]
+            return self._require_env("VOLUME_AGENT_PK")
         if role == "yield":
-            return os.environ["YIELD_AGENT_PK"]
+            return self._require_env("YIELD_AGENT_PK")
         raise ValueError(f"Unsupported role: {role}")
     
     def _address_from_env_pk(self, env_key: str) -> Optional[str]:
@@ -119,7 +125,7 @@ class Runner:
         return self.w3.eth.contract(address=Web3.to_checksum_address(address), abi=abi)
 
     def _build_and_send(self, tx: Dict[str, Any]) -> str:
-        nonce = self.w3.eth.get_transaction_count(self.address)
+        nonce = self.w3.eth.get_transaction_count(self.address, "pending")
         latest_block = self.w3.eth.get_block("latest")
         base_fee = latest_block.get("baseFeePerGas", self.w3.eth.gas_price)
         priority_fee = self.w3.to_wei(1, "gwei")
@@ -148,11 +154,7 @@ class Runner:
     def _safe_send(self, action: str, tx: Dict[str, Any], details: Dict[str, Any]) -> Optional[str]:
         try:
             tx_hash = self._build_and_send(tx)
-            self._write_log({
-                "action": action,
-                "details": details,
-                "tx_hash": tx_hash,
-            })
+            self._log_safe(action, details, tx_hash)
             return tx_hash
         except Exception as e:
             message = str(e)
@@ -170,10 +172,7 @@ class Runner:
             ]
 
             if any(marker in message for marker in known_race_markers):
-                self._write_log({
-                    "action": f"{action}_skipped",
-                    "details": {**details, "reason": message},
-                })
+                self._log_safe(f"{action}_skipped", {**details, "reason": message})
                 return None
 
             raise
@@ -316,7 +315,12 @@ class Runner:
     def run_forever(self) -> None:
         import traceback
 
-        self._log_safe("runner_started", {"role": self.role, "poll_seconds": self.poll_seconds})
+        self._log_safe("runner_started", {
+            "role": self.role,
+            "poll_seconds": self.poll_seconds,
+            "address": self.address,
+            "rpc_connected": self.w3.is_connected(),
+        })
 
         main_policy_checked = False
 
@@ -445,7 +449,7 @@ class Runner:
                             "now": now_ts,
                         },
                     )
-                    return
+                    continue
 
                 self._log_safe("attempt_create_subtask", {
                     "parent_job_id": job["id"],
@@ -524,9 +528,22 @@ class Runner:
     
     def _tick_specialist(self, category: bytes, label: str) -> None:
         jobs = self._all_jobs()
+        self._log_safe("specialist_scan_jobs", {
+            "role": self.role,
+            "category": label,
+            "count": len(jobs),
+        })
 
         # 1) accept open preferred subtasks
         for job in jobs:
+            self._log_safe("inspect_specialist_job", {
+                "job_id": job["id"],
+                "status": job["status"],
+                "is_subtask": job["isSubtask"],
+                "preferred_agent": job["preferredAgent"],
+                "assigned_agent": job["assignedAgent"],
+                "category": label,
+            })
             if (
                 job["isSubtask"]
                 and job["status"] == JOB_STATUS["Open"]
@@ -535,7 +552,11 @@ class Runner:
             ):
                 bond_bps = self.directory.functions.getBondBps(self.address).call()
                 bond_wei = (job["rewardWei"] * bond_bps) // 10_000
-
+                self._log_safe("attempt_accept_specialist_subtask", {
+                    "job_id": job["id"],
+                    "category": label,
+                    "bond_wei": str(bond_wei),
+                })
                 tx_hash = self._safe_send(
                     "accept_subtask_and_post_bond",
                     self.marketplace.functions.acceptJob(job["id"]).build_transaction(
@@ -558,6 +579,11 @@ class Runner:
                 and Web3.to_checksum_address(job["assignedAgent"]) == self.address
             ):
                 result_uri = f"ipfs://{label}-result"
+                self._log_safe("attempt_submit_specialist_result", {
+                    "job_id": job["id"],
+                    "category": label,
+                    "result_uri": result_uri,
+                })
                 tx_hash = self._safe_send(
                     "submit_result",
                     self.marketplace.functions.submitResult(

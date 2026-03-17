@@ -152,7 +152,7 @@ const categoryLabel = (hex?: string | null) => {
   return map[hex.toLowerCase()] || short(hex);
 };
 
-const demoJobs = [
+const demoJobs: UiJob[] = [
   {
     id: 5,
     parentJobId: 0,
@@ -258,7 +258,7 @@ function TxRow({ label, hash }: { label: string; hash?: string | null }) {
 }
 
 export default function BondedAgentDashboard() {
-  const [jobs, setJobs] = useState(demoJobs);
+  const [jobs, setJobs] = useState<UiJob[]>(demoJobs);
   const [isLive, setIsLive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedParentId, setSelectedParentId] = useState(5);

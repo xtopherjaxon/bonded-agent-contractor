@@ -248,7 +248,7 @@ function StatusBadge({ status }: { status: number }) {
   return <Badge variant={statusTone[label] || "secondary"}>{label}</Badge>;
 }
 
-function TxRow({ label, hash }) {
+function TxRow({ label, hash }: { label: string; hash?: string | null }) {
   return (
     <div className="flex items-center justify-between gap-3 text-sm">
       <span className="text-muted-foreground">{label}</span>

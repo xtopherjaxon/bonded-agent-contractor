@@ -271,7 +271,7 @@ export default function BondedAgentDashboard() {
   const [notice, setNotice] = useState("This is an MVP control panel. It is wired for the exact workflow you built: parent job creation, subtask delegation, specialist bonding, result submission, and manual human approval.");
 
   const [createSpecURI, setCreateSpecURI] = useState("ipfs://eth-market-job");
-  const [createRewardEth, setCreateRewardEth] = useState("0.0001");
+  const [createRewardEth, setCreateRewardEth] = useState("0.000001");
   const [createDeadlineHours, setCreateDeadlineHours] = useState("24");
 
   const [isCreating, setIsCreating] = useState(false);

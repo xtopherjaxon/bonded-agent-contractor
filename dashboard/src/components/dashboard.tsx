@@ -140,7 +140,7 @@ const isParentCompleted = (job: any) =>
   !!job && !job.isSubtask && job.status === 4;
 
 
-const categoryLabel = (hex) => {
+const categoryLabel = (hex?: string | null) => {
   const map = {
     "0xb635b0ee6e4c15c18d1b36f84d92442e53da477ae300027dd06478d4ee0559db": "eth_market_report",
     "0x6af8d57439ffc95a5893d7485897e6bc79cda8d8f7ad59da55f23c3028406a38": "price_data",

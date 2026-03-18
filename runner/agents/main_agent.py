@@ -9,6 +9,7 @@ from runner.common.jobs import job_tuple_to_dict, category_hex
 from runner.common.tx import TxHelper
 
 MAIN_SUBTASK_REWARD_WEI = Web3.to_wei(0.00001, "ether")
+MAIN_LOOP_SLEEP_SECONDS = 10
 
 
 class MainAgent:
@@ -54,6 +55,27 @@ class MainAgent:
         child_ids = self.marketplace.functions.getChildJobs(parent_job_id).call()
         return [job_tuple_to_dict(self.marketplace.functions.jobs(i).call()) for i in child_ids]
 
+    def parent_jobs(self, jobs):
+        return [job for job in jobs if not job["isSubtask"]]
+
+    def open_report_jobs(self, jobs):
+        now_ts = int(time.time())
+        return [
+            job
+            for job in self.parent_jobs(jobs)
+            if job["status"] == JOB_STATUS["Open"]
+            and job["category"] == self.report_cat
+            and int(job["deadline"]) > now_ts
+        ]
+
+    def accepted_main_jobs(self, jobs):
+        return [
+            job
+            for job in self.parent_jobs(jobs)
+            if job["status"] == JOB_STATUS["Accepted"]
+            and checksum_equal(job["assignedAgent"], self.address)
+        ]
+
     def ensure_policy(self):
         pol = self.policy.functions.policies(self.address).call()
         active = pol[5]
@@ -90,36 +112,19 @@ class MainAgent:
         self.logger.log("main_tick_start")
 
         jobs = self.all_jobs()
-        self.logger.log("main_scan_jobs", {"count": len(jobs)})
+        open_report_jobs = self.open_report_jobs(jobs)
+        accepted_main_jobs = self.accepted_main_jobs(jobs)
 
-        for job in jobs:
-            self.logger.log("inspect_job", {
-                "job_id": job["id"],
-                "status": job["status"],
-                "is_subtask": job["isSubtask"],
-                "assigned_agent": job["assignedAgent"],
-                "category_hex": category_hex(job["category"]),
-            })
+        self.logger.log(
+            "main_tick_summary",
+            {
+                "total_jobs": len(jobs),
+                "open_report_jobs": [job["id"] for job in open_report_jobs],
+                "accepted_main_jobs": [job["id"] for job in accepted_main_jobs],
+            },
+        )
 
-            if job["isSubtask"]:
-                self.logger.log("skip_job_is_subtask", {"job_id": job["id"]})
-                continue
-            if job["status"] != JOB_STATUS["Open"]:
-                self.logger.log("skip_job_not_open", {"job_id": job["id"], "status": job["status"]})
-                continue
-            if job["category"] != self.report_cat:
-                self.logger.log("skip_job_wrong_category", {"job_id": job["id"], "category_hex": category_hex(job["category"])})
-                continue
-
-            now_ts = int(time.time())
-            if int(job["deadline"]) <= now_ts:
-                self.logger.log("skip_job_expired", {
-                    "job_id": job["id"],
-                    "deadline": int(job["deadline"]),
-                    "now": now_ts,
-                })
-                continue
-
+        for job in open_report_jobs:
             self.logger.log("attempt_accept_job", {"job_id": job["id"]})
             tx_hash = self.tx.send(
                 "accept_job",
@@ -129,27 +134,8 @@ class MainAgent:
             if tx_hash:
                 return
 
-        for job in jobs:
-            if job["isSubtask"]:
-                continue
-            if job["status"] != JOB_STATUS["Accepted"]:
-                continue
-            if not checksum_equal(job["assignedAgent"], self.address):
-                self.logger.log("skip_parent_not_owned_by_main", {
-                    "job_id": job["id"],
-                    "assigned_agent": job["assignedAgent"],
-                    "self": self.address,
-                })
-                continue
-
-            self.logger.log("inspect_accepted_parent_for_subtasks", {"job_id": job["id"]})
+        for job in accepted_main_jobs:
             children = self.child_jobs(job["id"])
-            self.logger.log("existing_child_jobs", {
-                "job_id": job["id"],
-                "child_count": len(children),
-                "child_ids": [c["id"] for c in children],
-            })
-
             existing_categories = {c["category"] for c in children}
             subtask_specs = [
                 (self.price_cat, "ipfs://price-task", self.price_address),
@@ -157,13 +143,17 @@ class MainAgent:
                 (self.yield_cat, "ipfs://yield-task", self.yield_address),
             ]
 
+            self.logger.log(
+                "parent_progress",
+                {
+                    "job_id": job["id"],
+                    "child_ids": [c["id"] for c in children],
+                    "child_statuses": [{"id": c["id"], "status": c["status"]} for c in children],
+                },
+            )
+
             for category, spec_uri, preferred in subtask_specs:
                 if category in existing_categories:
-                    self.logger.log("skip_subtask_already_exists", {
-                        "parent_job_id": job["id"],
-                        "category_hex": Web3.to_hex(category),
-                        "preferred_agent": preferred,
-                    })
                     continue
 
                 now_ts = int(time.time())
@@ -171,23 +161,27 @@ class MainAgent:
                 safe_deadline = min(now_ts + 12 * 3600, parent_deadline)
 
                 if safe_deadline <= now_ts:
-                    self.logger.log("create_subtask_skipped", {
+                    self.logger.log(
+                        "skip_create_subtask_deadline",
+                        {
+                            "parent_job_id": job["id"],
+                            "category_hex": Web3.to_hex(category),
+                            "parent_deadline": parent_deadline,
+                            "now": now_ts,
+                        },
+                    )
+                    continue
+
+                self.logger.log(
+                    "attempt_create_subtask",
+                    {
                         "parent_job_id": job["id"],
                         "category_hex": Web3.to_hex(category),
                         "preferred_agent": preferred,
-                        "reason": "parent deadline too close or already expired",
-                        "parent_deadline": parent_deadline,
-                        "now": now_ts,
-                    })
-                    continue
-
-                self.logger.log("attempt_create_subtask", {
-                    "parent_job_id": job["id"],
-                    "category_hex": Web3.to_hex(category),
-                    "preferred_agent": preferred,
-                    "subtask_deadline": safe_deadline,
-                    "reward_wei": str(MAIN_SUBTASK_REWARD_WEI),
-                })
+                        "subtask_deadline": safe_deadline,
+                        "reward_wei": str(MAIN_SUBTASK_REWARD_WEI),
+                    },
+                )
 
                 tx_hash = self.tx.send(
                     "create_subtask",
@@ -211,10 +205,13 @@ class MainAgent:
 
             for child in children:
                 if child["status"] == JOB_STATUS["Submitted"]:
-                    self.logger.log("attempt_mark_subtask_completed", {
-                        "subtask_job_id": child["id"],
-                        "parent_job_id": job["id"],
-                    })
+                    self.logger.log(
+                        "attempt_mark_subtask_completed",
+                        {
+                            "subtask_job_id": child["id"],
+                            "parent_job_id": job["id"],
+                        },
+                    )
                     tx_hash = self.tx.send(
                         "mark_subtask_completed",
                         self.marketplace.functions.markCompleted(child["id"]).build_transaction({"from": self.address}),
@@ -224,15 +221,6 @@ class MainAgent:
                         return
 
             children = self.child_jobs(job["id"])
-            completed_children = len([c for c in children if c["status"] == JOB_STATUS["Completed"]])
-
-            self.logger.log("child_status_summary", {
-                "job_id": job["id"],
-                "child_count": len(children),
-                "completed_children": completed_children,
-                "child_statuses": [{"id": c["id"], "status": c["status"]} for c in children],
-            })
-
             if children and all(c["status"] == JOB_STATUS["Completed"] for c in children):
                 self.logger.log("attempt_submit_parent_result", {"job_id": job["id"]})
                 tx_hash = self.tx.send(
@@ -242,8 +230,6 @@ class MainAgent:
                 )
                 if tx_hash:
                     return
-            else:
-                self.logger.log("skip_parent_not_ready_for_submission", {"job_id": job["id"]})
 
         self.logger.log("main_tick_complete")
 
@@ -265,7 +251,7 @@ class MainAgent:
             except Exception as e:
                 self.logger.log_exception("main_agent_error", e)
 
-            time.sleep(10)
+            time.sleep(MAIN_LOOP_SLEEP_SECONDS)
 
 
 if __name__ == "__main__":

@@ -220,14 +220,40 @@ export default function BondedAgentDashboard() {
   const [createDeadlineHours, setCreateDeadlineHours] = useState("24");
 
   const [isCreating, setIsCreating] = useState(false);
-  const [agentLogs, setAgentLogs] = useState<any[]>([]);
-  const [logsLoading, setLogsLoading] = useState(false);
 
   const [agentStats, setAgentStats] = useState<Record<string, any>>({});
 
   const parentJobs = useMemo(() => jobs.filter((j) => !j.isSubtask), [jobs]);
   const selectedParent = useMemo(() => parentJobs.find((j) => j.id === selectedParentId) || parentJobs[0], [parentJobs, selectedParentId]);
   const selectedChildren = useMemo(() => jobs.filter((j) => j.parentJobId === selectedParent?.id), [jobs, selectedParent]);
+
+  const mainAgentAddress =
+    AGENT_CONFIG.find((agent) => agent.role === "main")?.address?.toLowerCase() || "";
+
+  const mainAcceptedJobs = useMemo(
+    () =>
+      parentJobs.filter(
+        (job) => (job.assignedAgent || "").toLowerCase() === mainAgentAddress && job.status >= 2
+      ).length,
+    [parentJobs, mainAgentAddress]
+  );
+
+  const mainCompletedJobs = useMemo(
+    () =>
+      parentJobs.filter(
+        (job) => (job.assignedAgent || "").toLowerCase() === mainAgentAddress && job.status === 4
+      ).length,
+    [parentJobs, mainAgentAddress]
+  );
+
+  const mainPendingApprovals = useMemo(
+    () =>
+      parentJobs.filter(
+        (job) => (job.assignedAgent || "").toLowerCase() === mainAgentAddress && job.status === 3
+      ).length,
+    [parentJobs, mainAgentAddress]
+  );
+
 
   useEffect(() => {
     if (!selectedParent && parentJobs.length) setSelectedParentId(parentJobs[0].id);
@@ -259,35 +285,15 @@ export default function BondedAgentDashboard() {
 
   useEffect(() => {
     refreshLiveData();
-    refreshAgentLogs();
     refreshAgentStats();
 
     const timer = setInterval(() => {
       refreshLiveData();
-      refreshAgentLogs();
       refreshAgentStats();
     }, 5000);
 
     return () => clearInterval(timer);
   }, []);
-
-
-  const refreshAgentLogs = async () => {
-    try {
-      setLogsLoading(true);
-
-      const res = await fetch("/api/logs");
-      const data = await res.json();
-
-      if (data.success) {
-        setAgentLogs(data.logs || []);
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLogsLoading(false);
-    }
-  };
 
 
   const refreshAgentStats = async () => {
@@ -561,7 +567,6 @@ export default function BondedAgentDashboard() {
             <TabsTrigger value="jobs">Jobs</TabsTrigger>
             <TabsTrigger value="agents">Agents</TabsTrigger>
             <TabsTrigger value="receipts">Receipts</TabsTrigger>
-            <TabsTrigger value="logs">Logs</TabsTrigger>
           </TabsList>
 
           <TabsContent value="jobs" className="grid gap-4 lg:grid-cols-[0.9fr_1.1fr]">
@@ -722,6 +727,7 @@ export default function BondedAgentDashboard() {
               const bondBps = stats?.bondBps;
               const effectiveBondBps =
                 reputationScore === 0 && (!bondBps || bondBps === 0) ? 3000 : bondBps;
+              const isMainAgent = agent.role === "main";
 
               return (
                 <Card key={agent.address} className="rounded-2xl shadow-sm">
@@ -740,34 +746,38 @@ export default function BondedAgentDashboard() {
 
                     <Separator />
 
-                    <div>Reputation: <span className="font-medium">{reputationScore}</span></div>
-                    <div>Bonded completed: <span className="font-medium">{bondedCompleted}</span></div>
-                    <div>Bond tier: <span className="font-medium">{getBondTierLabel(effectiveBondBps, reputationScore)}</span></div>
-                    <div>
-                      Bond requirement:{" "}
-                      <span className="font-medium">
-                        {effectiveBondBps === undefined ? "Unknown" : `${effectiveBondBps} bps`}
-                      </span>
-                    </div>
-
-
+                    {isMainAgent ? (
+                      <>
+                        <div>Accepted parent jobs: <span className="font-medium">{mainAcceptedJobs}</span></div>
+                        <div>Completed parent jobs: <span className="font-medium">{mainCompletedJobs}</span></div>
+                        <div>Pending human approvals: <span className="font-medium">{mainPendingApprovals}</span></div>
+                        <div>Settlement model: <span className="font-medium">Human-gated</span></div>
+                      </>
+                    ) : (
+                      <>
+                        <div>Reputation: <span className="font-medium">{reputationScore}</span></div>
+                        <div>Bonded completed: <span className="font-medium">{bondedCompleted}</span></div>
+                        <div>Bond tier: <span className="font-medium">{getBondTierLabel(effectiveBondBps, reputationScore)}</span></div>
+                        <div>
+                          Bond requirement: {" "}
+                          <span className="font-medium">
+                            {effectiveBondBps === undefined ? "Unknown" : `${effectiveBondBps} bps`}
+                          </span>
+                        </div>
+                      </>
+                    )}
 
                     <div className="flex flex-wrap gap-2 pt-2">
-                      {agent.role !== "main" && (
-                        <Badge variant="outline">Bonded Specialist</Badge>
-                      )}
-
-                      {agent.role === "main" && (
-                        <Badge variant="outline">Human-Gated Settlement</Badge>
-                      )}
-
-                      <Badge variant="outline">{getReputationTier(reputationScore)}</Badge>
-
-                      {bondBps > 0 && bondBps <= 1000 && (
+                      {!isMainAgent && <Badge variant="outline">Bonded Specialist</Badge>}
+                      {isMainAgent && <Badge variant="outline">Human-Gated Settlement</Badge>}
+                      {!isMainAgent && <Badge variant="outline">{getReputationTier(reputationScore)}</Badge>}
+                      {!isMainAgent && bondBps > 0 && bondBps <= 1000 && (
                         <Badge variant="outline">Low Bond Requirement</Badge>
                       )}
-
-                      {bondedCompleted > 0 && (
+                      {isMainAgent && mainCompletedJobs > 0 && (
+                        <Badge variant="outline">Proven Coordinator</Badge>
+                      )}
+                      {!isMainAgent && bondedCompleted > 0 && (
                         <Badge variant="outline">Proven Onchain</Badge>
                       )}
                     </div>
@@ -824,79 +834,6 @@ export default function BondedAgentDashboard() {
               </CardContent>
             </Card>
           </TabsContent>
-
-          
-          <TabsContent value="logs" className="grid gap-4">
-            <Card className="rounded-2xl shadow-sm">
-              <CardHeader>
-                <div className="flex items-center justify-between gap-3">
-                  <CardTitle className="text-lg">Agent Log Panel</CardTitle>
-                  <Button variant="outline" size="sm" onClick={refreshAgentLogs} className="gap-2">
-                    <RefreshCcw className={`h-4 w-4 ${logsLoading ? "animate-spin" : ""}`} />
-                    Refresh Logs
-                  </Button>
-                </div>
-              </CardHeader>
-
-              <CardContent className="grid gap-4 md:grid-cols-2">
-                {agentLogs.length === 0 && (
-                  <div className="md:col-span-2 rounded-2xl border border-dashed p-6 text-sm text-muted-foreground">
-                    No agent logs available yet.
-                  </div>
-                )}
-                {agentLogs.map((agent) => {
-                  const steps = agent.data?.steps || [];
-                  const latestSteps = [...steps].slice(-8).reverse();
-
-                  return (
-                    <Card key={agent.key} className="rounded-2xl">
-                      <CardHeader>
-                        <CardTitle className="text-base">{agent.label}</CardTitle>
-                      </CardHeader>
-
-                      <CardContent className="grid gap-3">
-                        <div className="text-xs text-muted-foreground">
-                          Status: {agent.data?.status || "unknown"}
-                        </div>
-
-                        {latestSteps.length === 0 ? (
-                          <div className="text-sm text-muted-foreground">
-                            No log entries yet.
-                          </div>
-                        ) : (
-                          <div className="grid gap-2">
-                            {latestSteps.map((step: any, idx: number) => (
-                              <div key={`${agent.key}-${idx}`} className="rounded-xl border p-3 text-sm">
-                                <div className="flex items-center justify-between gap-3">
-                                  <div className="font-medium">{step.action || "unknown_action"}</div>
-                                  <Badge variant="secondary">Step {step.step ?? "?"}</Badge>
-                                </div>
-
-                                {step.details && Object.keys(step.details).length > 0 && (
-                                  <div className="mt-2 text-xs text-muted-foreground break-all">
-                                    {JSON.stringify(step.details)}
-                                  </div>
-                                )}
-
-                                {step.tx_hash && (
-                                  <div className="mt-2">
-                                    <code className="rounded bg-muted px-2 py-1 text-xs">
-                                      {step.tx_hash}
-                                    </code>
-                                  </div>
-                                )}
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </CardContent>
-                    </Card>
-                  );
-                })}
-              </CardContent>
-            </Card>
-          </TabsContent>
-
 
         </Tabs>
       </div>

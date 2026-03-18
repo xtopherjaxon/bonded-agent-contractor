@@ -1,16 +1,29 @@
 import os
 from dataclasses import dataclass
 from pathlib import Path
+
 from dotenv import load_dotenv
 
 ROOT = Path(__file__).resolve().parents[2]
-load_dotenv(ROOT / "runner" / ".env")
+ENV_CANDIDATES = [
+    ROOT / "runner" / ".env",
+    ROOT / ".env",
+]
+
+for env_path in ENV_CANDIDATES:
+    if env_path.exists():
+        load_dotenv(env_path, override=True)
 
 
 def require_env(key: str) -> str:
     value = os.environ.get(key)
+    if value is None:
+        raise RuntimeError(f"Missing required environment variable: {key}")
+
+    value = value.strip()
     if not value:
         raise RuntimeError(f"Missing required environment variable: {key}")
+
     return value
 
 
@@ -31,7 +44,7 @@ def load_shared_config() -> SharedConfig:
         agent_directory_address=require_env("AGENT_DIRECTORY_ADDRESS"),
         spending_policy_address=require_env("SPENDING_POLICY_ADDRESS"),
         escrow_bond_address=require_env("ESCROW_BOND_ADDRESS"),
-        log_api_url=os.environ.get("LOG_API_URL"),
+        log_api_url=(os.environ.get("LOG_API_URL") or "").strip() or None,
     )
 
 
@@ -49,8 +62,19 @@ def load_role_pk(role: str) -> str:
 
 def load_specialist_addresses() -> dict[str, str]:
     return {
-        "main_pk": require_env("MAIN_AGENT_PK"),
-        "price_pk": require_env("PRICE_AGENT_PK"),
-        "volume_pk": require_env("VOLUME_AGENT_PK"),
-        "yield_pk": require_env("YIELD_AGENT_PK"),
+        "main": require_env("MAIN_AGENT_ADDRESS"),
+        "price": require_env("PRICE_AGENT_ADDRESS"),
+        "volume": require_env("VOLUME_AGENT_ADDRESS"),
+        "yield": require_env("YIELD_AGENT_ADDRESS"),
+    }
+
+
+def debug_config_snapshot() -> dict[str, str | None]:
+    return {
+        "rpc_url": (os.environ.get("RPC_URL") or "").strip() or None,
+        "job_marketplace_address": (os.environ.get("JOB_MARKETPLACE_ADDRESS") or "").strip() or None,
+        "agent_directory_address": (os.environ.get("AGENT_DIRECTORY_ADDRESS") or "").strip() or None,
+        "spending_policy_address": (os.environ.get("SPENDING_POLICY_ADDRESS") or "").strip() or None,
+        "escrow_bond_address": (os.environ.get("ESCROW_BOND_ADDRESS") or "").strip() or None,
+        "log_api_url": (os.environ.get("LOG_API_URL") or "").strip() or None,
     }

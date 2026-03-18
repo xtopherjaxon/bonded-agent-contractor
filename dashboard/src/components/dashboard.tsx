@@ -208,7 +208,7 @@ export default function BondedAgentDashboard() {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedParentId, setSelectedParentId] = useState(0);
 
-  const [rpcUrl] = useState(process.env.NEXT_PUBLIC_RPC_URL || "http://127.0.0.1:8545");
+  const [rpcUrl] = useState(process.env.NEXT_PUBLIC_RPC_URL || "https://sepolia.base.org");
   const [marketplaceAddress] = useState(
     process.env.NEXT_PUBLIC_JOB_MARKETPLACE_ADDRESS || "0x66Db6d191cd163F56197b767928A507dF8b47AA7"
   );
@@ -290,7 +290,7 @@ export default function BondedAgentDashboard() {
     const timer = setInterval(() => {
       refreshLiveData();
       refreshAgentStats();
-    }, 5000);
+    }, 15000);
 
     return () => clearInterval(timer);
   }, []);

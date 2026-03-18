@@ -1,26 +1,26 @@
 import { createPublicClient, http, getAddress } from "viem";
-import { foundry } from "viem/chains";
+import { baseSepolia } from "viem/chains";
 
 export const RPC_URL =
   process.env.NEXT_PUBLIC_RPC_URL || "http://127.0.0.1:8545";
 
 export const JOB_MARKETPLACE_ADDRESS = getAddress(
   process.env.NEXT_PUBLIC_JOB_MARKETPLACE_ADDRESS ||
-    "0x66Db6d191cd163F56197b767928A507dF8b47AA7"
+    "0xcB92AF9D683de4835002A1f90931aD0BCF6D8951"
 );
 
 export const AGENT_DIRECTORY_ADDRESS = getAddress(
   process.env.NEXT_PUBLIC_AGENT_DIRECTORY_ADDRESS ||
-    "0x82B769500E34362a76DF81150e12C746093D954F"
+    "0x5366e9A276D02b30D0631E9F32eD4375165eB939"
 );
 
 export const ESCROW_BOND_ADDRESS = getAddress(
   process.env.NEXT_PUBLIC_ESCROW_BOND_ADDRESS ||
-    "0x7ef8E99980Da5bcEDcF7C10f41E55f759F6A174B"
+    "0x8Be79F841938eCC300585600a99CDb3a67f539be"
 );
 
 export const publicClient = createPublicClient({
-  chain: foundry,
+  chain: baseSepolia,
   transport: http(RPC_URL),
 });
 

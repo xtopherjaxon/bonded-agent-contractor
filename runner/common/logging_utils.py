@@ -23,7 +23,12 @@ class AgentLogger:
         }
         print(json.dumps(payload, default=str), flush=True)
 
-        if not self.log_api_url:
+        # skip external logging if not configured or pointing to localhost
+        if (
+            not self.log_api_url
+            or "localhost" in self.log_api_url
+            or "127.0.0.1" in self.log_api_url
+        ):
             return
 
         try:
@@ -36,13 +41,12 @@ class AgentLogger:
             with urllib.request.urlopen(req, timeout=5):
                 pass
         except Exception as e:
-            print(json.dumps({
-                "role": self.role,
-                "action": "log_api_error",
-                "details": {"message": str(e)},
-                "step": self.step,
-                "timestamp": int(time.time() * 1000),
-            }), flush=True)
+            # suppress common auth/protection errors (e.g., 401/403 from Vercel)
+            if hasattr(e, "code") and e.code in (401, 403):
+                return
+
+            # print a minimal, non-recursive error (avoid noisy structured logs)
+            print(f"[{self.role}] log_api_error: {e}", flush=True)
 
     def log_exception(self, action: str, e: Exception) -> None:
         traceback.print_exc()

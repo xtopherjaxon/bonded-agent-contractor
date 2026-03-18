@@ -111,6 +111,15 @@ class MainAgent:
                 self.logger.log("skip_job_wrong_category", {"job_id": job["id"], "category_hex": category_hex(job["category"])})
                 continue
 
+            now_ts = int(time.time())
+            if int(job["deadline"]) <= now_ts:
+                self.logger.log("skip_job_expired", {
+                    "job_id": job["id"],
+                    "deadline": int(job["deadline"]),
+                    "now": now_ts,
+                })
+                continue
+
             self.logger.log("attempt_accept_job", {"job_id": job["id"]})
             tx_hash = self.tx.send(
                 "accept_job",

@@ -1,3 +1,5 @@
+parser.add_argument("--role", required=True, choices=["main", "price", "volume", "yield"])
+
 import argparse
 import json
 import os
@@ -606,17 +608,21 @@ def main() -> None:
     import time
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--role", required=True, choices=["main", "price", "volume", "yield"])
+    parser.add_argument("--role", required=True, choices=["main", "price", "volume", "yield", "all"])
     parser.add_argument("--once", action="store_true")
     parser.add_argument("--poll-seconds", type=int, default=10)
     args = parser.parse_args()
 
+    roles_to_run = ["main", "price", "volume", "yield"] if args.role == "all" else [args.role]
+
     while True:
         try:
-            runner = Runner(role=args.role, once=args.once, poll_seconds=args.poll_seconds)
-            runner.run_forever()
+            for role in roles_to_run:
+                runner = Runner(role=role, once=True, poll_seconds=args.poll_seconds)
+                runner.run_forever()
             if args.once:
                 break
+            time.sleep(args.poll_seconds)
         except KeyboardInterrupt:
             raise
         except Exception as e:

@@ -35,6 +35,10 @@ class SharedConfig:
     spending_policy_address: str
     escrow_bond_address: str
     log_api_url: str | None
+    # ZK fields
+    zk_report_verifier_address: str | None
+    zk_prover_enabled: bool
+    zk_artifacts_dir: str | None
 
 
 def load_shared_config() -> SharedConfig:
@@ -45,6 +49,10 @@ def load_shared_config() -> SharedConfig:
         spending_policy_address=require_env("SPENDING_POLICY_ADDRESS"),
         escrow_bond_address=require_env("ESCROW_BOND_ADDRESS"),
         log_api_url=(os.environ.get("LOG_API_URL") or "").strip() or None,
+        # ZK fields
+        zk_report_verifier_address=(os.environ.get("ZK_REPORT_VERIFIER_ADDRESS") or "").strip() or None,
+        zk_prover_enabled=(os.environ.get("ZK_PROVER_ENABLED") or "").lower() == "true",
+        zk_artifacts_dir=(os.environ.get("ZK_ARTIFACTS_DIR") or "").strip() or None,
     )
 
 
@@ -89,4 +97,7 @@ def debug_config_snapshot() -> dict[str, str | None]:
         "has_price_agent_pk": bool((os.environ.get("PRICE_AGENT_PK") or "").strip()),
         "has_volume_agent_pk": bool((os.environ.get("VOLUME_AGENT_PK") or "").strip()),
         "has_yield_agent_pk": bool((os.environ.get("YIELD_AGENT_PK") or "").strip()),
+        "zk_report_verifier_address": (os.environ.get("ZK_REPORT_VERIFIER_ADDRESS") or "").strip() or None,
+        "zk_prover_enabled": (os.environ.get("ZK_PROVER_ENABLED") or "").strip() or None,
+        "zk_artifacts_dir": (os.environ.get("ZK_ARTIFACTS_DIR") or "").strip() or None,
     }

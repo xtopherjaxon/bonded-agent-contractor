@@ -6,10 +6,40 @@ from runner.common.config import load_shared_config, load_role_pk, load_speciali
 from runner.common.logging_utils import AgentLogger
 from runner.common.chain import JOB_STATUS, checksum_equal, keccak_text, make_contract
 from runner.common.jobs import job_tuple_to_dict, category_hex
+from runner.common.zk_prover import build_parent_report_input, generate_parent_report_proof, ZKProverInputError
+from runner.common.zk_chain import submit_zk_report
 from runner.common.tx import TxHelper
 
 MAIN_SUBTASK_REWARD_WEI = Web3.to_wei(0.00001, "ether")
 MAIN_LOOP_SLEEP_SECONDS = 10
+
+ZK_REPORT_VERIFIER_ABI = [
+    {
+        "inputs": [
+            {"internalType": "uint256", "name": "jobId", "type": "uint256"},
+            {"internalType": "bytes32", "name": "reportHash", "type": "bytes32"},
+            {"internalType": "bytes", "name": "proof", "type": "bytes"},
+        ],
+        "name": "submitZKReport",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function",
+    },
+    {
+        "inputs": [{"internalType": "uint256", "name": "jobId", "type": "uint256"}],
+        "name": "getVerifiedReportHash",
+        "outputs": [{"internalType": "bytes32", "name": "", "type": "bytes32"}],
+        "stateMutability": "view",
+        "type": "function",
+    },
+    {
+        "inputs": [{"internalType": "uint256", "name": "jobId", "type": "uint256"}],
+        "name": "isVerified",
+        "outputs": [{"internalType": "bool", "name": "", "type": "bool"}],
+        "stateMutability": "view",
+        "type": "function",
+    },
+]
 
 
 class MainAgent:
@@ -222,11 +252,89 @@ class MainAgent:
 
             children = self.child_jobs(job["id"])
             if children and all(c["status"] == JOB_STATUS["Completed"] for c in children):
-                self.logger.log("attempt_submit_parent_result", {"job_id": job["id"]})
+                zk_input = None
+                zk_proof_bundle = None
+
+                if self.cfg.zk_prover_enabled:
+                    try:
+                        zk_input = build_parent_report_input(
+                            parent_job=job,
+                            all_jobs=jobs,
+                            main_agent_address=self.address,
+                        )
+                        zk_proof_bundle = generate_parent_report_proof(zk_input)
+                        self.logger.log(
+                            "zk_parent_report_built",
+                            {
+                                "job_id": job["id"],
+                                "parent_report_hash": zk_input["parent_report_hash"],
+                                "price_subtask_job_id": zk_input["price"]["job_id"],
+                                "volume_subtask_job_id": zk_input["volume"]["job_id"],
+                                "yield_subtask_job_id": zk_input["yield"]["job_id"],
+                            },
+                        )
+                        self.logger.log(
+                            "zk_parent_report_proof_generated",
+                            {
+                                "job_id": job["id"],
+                                "parent_report_hash": zk_input["parent_report_hash"],
+                                "has_proof": zk_proof_bundle.get("proof") is not None,
+                            },
+                        )
+                    except ZKProverInputError as e:
+                        self.logger.log(
+                            "zk_parent_report_input_error",
+                            {
+                                "job_id": job["id"],
+                                "message": str(e),
+                            },
+                        )
+                        continue
+                    except Exception as e:
+                        self.logger.log_exception("zk_parent_report_generation_error", e)
+                        continue
+
+                submit_details = {"job_id": job["id"]}
+                if zk_input:
+                    submit_details["parent_report_hash"] = zk_input["parent_report_hash"]
+
+                if zk_input and self.cfg.zk_report_verifier_address:
+                    try:
+                        self.logger.log(
+                            "attempt_submit_zk_report",
+                            {
+                                "job_id": job["id"],
+                                "verifier_address": self.cfg.zk_report_verifier_address,
+                                "parent_report_hash": zk_input["parent_report_hash"],
+                            },
+                        )
+                        zk_tx_hash = submit_zk_report(
+                            w3=self.w3,
+                            account=self.account,
+                            verifier_address=self.cfg.zk_report_verifier_address,
+                            verifier_abi=ZK_REPORT_VERIFIER_ABI,
+                            job_id=job["id"],
+                            report_hash=zk_input["parent_report_hash"],
+                            proof=(zk_proof_bundle or {}).get("proof"),
+                        )
+                        submit_details["zk_tx_hash"] = zk_tx_hash
+                        self.logger.log(
+                            "submit_zk_report",
+                            {
+                                "job_id": job["id"],
+                                "parent_report_hash": zk_input["parent_report_hash"],
+                                "zk_tx_hash": zk_tx_hash,
+                            },
+                        )
+                    except Exception as e:
+                        self.logger.log_exception("submit_zk_report_error", e)
+                        continue
+
+                self.logger.log("attempt_submit_parent_result", submit_details)
                 tx_hash = self.tx.send(
                     "submit_parent_result",
                     self.marketplace.functions.submitResult(job["id"], "ipfs://final-report").build_transaction({"from": self.address}),
-                    {"job_id": job["id"]},
+                    submit_details,
                 )
                 if tx_hash:
                     return

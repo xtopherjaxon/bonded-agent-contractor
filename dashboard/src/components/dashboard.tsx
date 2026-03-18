@@ -11,7 +11,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { Activity, CheckCircle2, Clock3, Shield, Wallet, AlertTriangle, RefreshCcw, FileText, Link2 } from "lucide-react";
+import { Activity, CheckCircle2, Shield, Wallet, AlertTriangle, RefreshCcw, FileText } from "lucide-react";
 
 const STATUS: Record<number, string> = {
   0: "None",
@@ -152,96 +152,8 @@ const categoryLabel = (hex?: string | null) => {
   return map[hex.toLowerCase()] || short(hex);
 };
 
-const demoJobs: UiJob[] = [
-  {
-    id: 5,
-    parentJobId: 0,
-    creator: "0x1111111111111111111111111111111111111111",
-    assignedAgent: "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
-    preferredAgent: "0x0000000000000000000000000000000000000000",
-    category: "0xb635b0ee6e4c15c18d1b36f84d92442e53da477ae300027dd06478d4ee0559db",
-    specURI: "ipfs://new-report",
-    resultURI: "ipfs://final-report",
-    rewardWei: "1000000000000000000",
-    bondWeiRequired: "0",
-    deadline: Math.floor(Date.now() / 1000) + 3600,
-    status: 3,
-    isSubtask: false,
-    childJobs: [6, 7, 8],
-    txHashes: {
-      created: "0xcreateparent",
-      accepted: "0xacceptparent",
-      submitted: "0xsubmitparent",
-    },
-  },
-  {
-    id: 6,
-    parentJobId: 5,
-    creator: "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
-    assignedAgent: "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
-    preferredAgent: "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
-    category: "0x6af8d57439ffc95a5893d7485897e6bc79cda8d8f7ad59da55f23c3028406a38",
-    specURI: "ipfs://price-task",
-    resultURI: "ipfs://price-result",
-    rewardWei: "200000000000000000",
-    bondWeiRequired: "40000000000000000",
-    deadline: Math.floor(Date.now() / 1000) + 1800,
-    status: 4,
-    isSubtask: true,
-    txHashes: {
-      accepted: "0xacceptprice",
-      submitted: "0xsubmitprice",
-      completed: "0xcompleteprice",
-    },
-  },
-  {
-    id: 7,
-    parentJobId: 5,
-    creator: "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
-    assignedAgent: "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65",
-    preferredAgent: "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65",
-    category: "0x6a5a6bbc61eee87da7722fbf47558e3abfb4f2f0de82cb61196beacea7683270",
-    specURI: "ipfs://volume-task",
-    resultURI: "ipfs://volume-result",
-    rewardWei: "200000000000000000",
-    bondWeiRequired: "40000000000000000",
-    deadline: Math.floor(Date.now() / 1000) + 1800,
-    status: 4,
-    isSubtask: true,
-    txHashes: {
-      accepted: "0xacceptvolume",
-      submitted: "0xsubmitvolume",
-      completed: "0xcompletevolume",
-    },
-  },
-  {
-    id: 8,
-    parentJobId: 5,
-    creator: "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
-    assignedAgent: "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc",
-    preferredAgent: "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc",
-    category: "0x89a06dff28f52cee41ea301afe84fa01147a3d9eb01357854221a525ccacf0ea",
-    specURI: "ipfs://yield-task",
-    resultURI: "ipfs://yield-result",
-    rewardWei: "200000000000000000",
-    bondWeiRequired: "40000000000000000",
-    deadline: Math.floor(Date.now() / 1000) + 1800,
-    status: 4,
-    isSubtask: true,
-    txHashes: {
-      accepted: "0xacceptyield",
-      submitted: "0xsubmityield",
-      completed: "0xcompleteyield",
-    },
-  },
-];
 
-const demoAgents = [
-  { name: "MainContractor", address: "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC", role: "main", reputation: 0, bondedCompleted: 0, bondTier: "No bond on parent jobs" },
-  { name: "PriceScout", address: "0x90F79bf6EB2c4f870365E785982E1f101E93b906", role: "price", reputation: 10, bondedCompleted: 1, bondTier: "20%" },
-  { name: "VolumeScout", address: "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65", role: "volume", reputation: 10, bondedCompleted: 1, bondTier: "20%" },
-  { name: "YieldScout", address: "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc", role: "yield", reputation: 10, bondedCompleted: 1, bondTier: "20%" },
-];
+
 
 function StatusBadge({ status }: { status: number }) {
   const label = STATUS[status] || "Unknown";
@@ -257,18 +169,51 @@ function TxRow({ label, hash }: { label: string; hash?: string | null }) {
   );
 }
 
+const AGENT_CONFIG = [
+  {
+    name: "Main Agent",
+    role: "main",
+    address:
+      process.env.NEXT_PUBLIC_MAIN_AGENT_ADDRESS ||
+      "0x727a2483C4F90CA03FB1a8Db16d9ED86e86FB8Dc",
+  },
+  {
+    name: "Price Agent",
+    role: "price",
+    address:
+      process.env.NEXT_PUBLIC_PRICE_AGENT_ADDRESS ||
+      "0x3B93DA6DA26998da057d2997306dE32e97222125",
+  },
+  {
+    name: "Volume Agent",
+    role: "volume",
+    address:
+      process.env.NEXT_PUBLIC_VOLUME_AGENT_ADDRESS ||
+      "0x8e6bEAF605D8cDD36591226c7487ee41aBE8B677",
+  },
+  {
+    name: "Yield Agent",
+    role: "yield",
+    address:
+      process.env.NEXT_PUBLIC_YIELD_AGENT_ADDRESS ||
+      "0x808c89d742e22d805b83e2b40da6471B2353Afaf",
+  },
+] as const;
+
+
+
 export default function BondedAgentDashboard() {
-  const [jobs, setJobs] = useState<UiJob[]>(demoJobs);
+  const [jobs, setJobs] = useState<UiJob[]>([]);
   const [isLive, setIsLive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedParentId, setSelectedParentId] = useState(5);
+  const [selectedParentId, setSelectedParentId] = useState(0);
 
   const [rpcUrl] = useState(process.env.NEXT_PUBLIC_RPC_URL || "http://127.0.0.1:8545");
   const [marketplaceAddress] = useState(
     process.env.NEXT_PUBLIC_JOB_MARKETPLACE_ADDRESS || "0x66Db6d191cd163F56197b767928A507dF8b47AA7"
   );
 
-  const [notice, setNotice] = useState("This is an MVP control panel. It is wired for the exact workflow you built: parent job creation, subtask delegation, specialist bonding, result submission, and manual human approval.");
+  const [notice, setNotice] = useState("Live control panel for the bonded agent workflow: parent job creation, subtask delegation, specialist bonding, result submission, and manual human approval.");
 
   const [createSpecURI, setCreateSpecURI] = useState("ipfs://eth-market-job");
   const [createRewardEth, setCreateRewardEth] = useState("0.000001");
@@ -293,16 +238,20 @@ export default function BondedAgentDashboard() {
       setIsLoading(true);
       const liveJobs = await fetchAllJobs();
 
-      if (liveJobs.length > 0) {
+            if (liveJobs.length > 0) {
         setJobs(liveJobs);
         setIsLive(true);
         setNotice("Live on-chain state loaded from JobMarketplace.");
       } else {
-        setNotice("Connected successfully, but no jobs were found on-chain. Showing demo data until a fresh job is created.");
+        setJobs([]);
+        setIsLive(true);
+        setNotice("Connected successfully, but no jobs were found on-chain yet.");
       }
     } catch (error) {
       console.error(error);
-      setNotice("Could not load live chain state. Showing demo data.");
+            setJobs([]);
+      setIsLive(false);
+      setNotice("Could not load live chain state.");
     } finally {
       setIsLoading(false);
     }
@@ -344,7 +293,7 @@ export default function BondedAgentDashboard() {
   const refreshAgentStats = async () => {
     try {
       const statsEntries = await Promise.all(
-        demoAgents.map(async (agent) => {
+          AGENT_CONFIG.map(async (agent) => {
           try {
             const stats = await fetchAgentStats(agent.address as `0x${string}`);
             return [agent.address, stats];
@@ -421,10 +370,10 @@ export default function BondedAgentDashboard() {
     }
   };
 
-  const rejectParent = () => {
-    setJobs((prev) => prev.map((job) => (job.id === selectedParent.id ? { ...job, status: 5 } : job)));
-    setNotice(`Parent job ${selectedParent.id} rejected by human. In the real app, this button should call markFailed(${selectedParent.id}).`);
-  };
+    const rejectParent = () => {
+      if (!selectedParent) return;
+      setNotice(`Reject/fail action is not wired yet for parent job ${selectedParent.id}. Approval is live; rejection still needs a real contract call.`);
+    };
 
   return (
     <div className="min-h-screen bg-background p-6">
@@ -442,7 +391,7 @@ export default function BondedAgentDashboard() {
                 <div className="flex items-center gap-2">
                   <Badge variant="secondary" className="gap-2">
                     <Activity className="h-3.5 w-3.5" />
-                    {isLive ? "Live Chain Data" : "Demo UI"}
+                    {isLive ? "Live Chain Data" : "Disconnected"}
                   </Badge>
 
                   <Button variant="outline" size="sm" onClick={refreshLiveData} className="gap-2">
@@ -473,8 +422,10 @@ export default function BondedAgentDashboard() {
                 </Card>
                 <Card className="rounded-2xl">
                   <CardContent className="p-4">
-                    <div className="text-xs text-muted-foreground">Specialist bond size</div>
-                    <div className="mt-2 text-2xl font-semibold">0.04 ETH</div>
+                    <div className="text-xs text-muted-foreground">Pending human approvals</div>
+                    <div className="mt-2 text-2xl font-semibold">
+                      {parentJobs.filter((j) => isPendingHumanApproval(j)).length}
+                    </div>
                   </CardContent>
                 </Card>
               </div>
@@ -550,9 +501,7 @@ export default function BondedAgentDashboard() {
                     Marketplace: {marketplaceAddress}
                   </div>
                   <div className="mt-1 text-muted-foreground">
-                    Human signer is configured server-side.
-                    Human actions are currently server-signed for demo reliability and frictionless review.
-                    The next production step is wallet-connected human approval.
+                    Human approval is currently executed through the server-side approval route.
                   </div>
                 </div>
 
@@ -567,7 +516,7 @@ export default function BondedAgentDashboard() {
 
                   <Button variant="destructive" onClick={rejectParent} className="gap-2">
                     <AlertTriangle className="h-4 w-4" />
-                    Reject / Fail Job
+                    Reject / Fail Job (not wired)
                   </Button>
                 </div>
 
@@ -597,7 +546,7 @@ export default function BondedAgentDashboard() {
                   )}
 
                   <p className="text-xs text-muted-foreground">
-                    This is the human control point. Final settlement stays manual by design.
+                    This is the human control point. Approval is live; rejection still needs to be wired to a real contract call.
                   </p>
                 </div>
               </CardContent>
@@ -622,6 +571,11 @@ export default function BondedAgentDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="grid gap-3">
+                  {parentJobs.length === 0 && (
+                    <div className="rounded-2xl border border-dashed p-6 text-sm text-muted-foreground">
+                      No parent jobs found on-chain yet.
+                    </div>
+                  )}
                   {parentJobs.map((job) => (
                     <button
                       key={job.id}
@@ -728,6 +682,11 @@ export default function BondedAgentDashboard() {
                         <CardTitle className="text-base">Subtasks</CardTitle>
                       </CardHeader>
                       <CardContent className="grid gap-3">
+                        {selectedChildren.length === 0 && (
+                          <div className="rounded-2xl border border-dashed p-4 text-sm text-muted-foreground">
+                            No subtasks for this parent job yet.
+                          </div>
+                        )}
                         {selectedChildren.map((child) => (
                           <div key={child.id} className="rounded-2xl border p-4">
                             <div className="flex items-center justify-between gap-3">
@@ -756,10 +715,10 @@ export default function BondedAgentDashboard() {
           </TabsContent>
 
           <TabsContent value="agents" className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            {demoAgents.map((agent) => {
+            {AGENT_CONFIG.map((agent) => {
               const stats = agentStats[agent.address];
-              const reputationScore = stats?.reputationScore ?? agent.reputation ?? 0;
-              const bondedCompleted = stats?.bondedJobsCompleted ?? agent.bondedCompleted ?? 0;
+              const reputationScore = stats?.reputationScore ?? 0;
+              const bondedCompleted = stats?.bondedJobsCompleted ?? 0;
               const bondBps = stats?.bondBps;
               const effectiveBondBps =
                 reputationScore === 0 && (!bondBps || bondBps === 0) ? 3000 : bondBps;
@@ -880,6 +839,11 @@ export default function BondedAgentDashboard() {
               </CardHeader>
 
               <CardContent className="grid gap-4 md:grid-cols-2">
+                {agentLogs.length === 0 && (
+                  <div className="md:col-span-2 rounded-2xl border border-dashed p-6 text-sm text-muted-foreground">
+                    No agent logs available yet.
+                  </div>
+                )}
                 {agentLogs.map((agent) => {
                   const steps = agent.data?.steps || [];
                   const latestSteps = [...steps].slice(-8).reverse();
@@ -908,9 +872,11 @@ export default function BondedAgentDashboard() {
                                   <Badge variant="secondary">Step {step.step ?? "?"}</Badge>
                                 </div>
 
-                                <div className="mt-2 text-xs text-muted-foreground break-all">
-                                  {step.details ? JSON.stringify(step.details) : "No details"}
-                                </div>
+                                {step.details && Object.keys(step.details).length > 0 && (
+                                  <div className="mt-2 text-xs text-muted-foreground break-all">
+                                    {JSON.stringify(step.details)}
+                                  </div>
+                                )}
 
                                 {step.tx_hash && (
                                   <div className="mt-2">

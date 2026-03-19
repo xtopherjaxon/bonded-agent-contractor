@@ -1,14 +1,6 @@
 
 
 import time
-import os
-
-print("DEBUG YIELD START")
-print("DEBUG RPC_URL:", bool(os.getenv("RPC_URL")))
-print("DEBUG YIELD_AGENT_PK:", bool(os.getenv("YIELD_AGENT_PK")))
-print("DEBUG YIELD_AGENT_ADDRESS:", os.getenv("YIELD_AGENT_ADDRESS"))
-print("DEBUG JOB_MARKETPLACE_ADDRESS:", os.getenv("JOB_MARKETPLACE_ADDRESS"))
-print("DEBUG AGENT_DIRECTORY_ADDRESS:", os.getenv("AGENT_DIRECTORY_ADDRESS"))
 from web3 import Web3
 
 from runner.common.config import load_shared_config, load_role_pk

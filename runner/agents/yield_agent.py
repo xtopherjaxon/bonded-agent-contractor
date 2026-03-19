@@ -105,17 +105,23 @@ class YieldAgent:
                 return
 
     def run(self):
-        self.logger.log("agent_started", {
-            "role": self.role,
-            "address": self.address,
-            "rpc_connected": self.w3.is_connected(),
-        })
-
         while True:
             try:
+                self.logger.log("agent_started", {
+                    "role": self.role,
+                    "address": self.address,
+                    "rpc_connected": self.w3.is_connected(),
+                })
+                self.logger.log("yield_loop_heartbeat", {
+                    "role": self.role,
+                    "address": self.address,
+                })
                 self.tick()
             except Exception as e:
-                self.logger.log_exception("yield_agent_error", e)
+                try:
+                    self.logger.log_exception("yield_agent_error", e)
+                except Exception:
+                    print(f"[yield_agent_error] {e}")
             time.sleep(10)
 
 

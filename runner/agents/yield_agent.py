@@ -126,4 +126,11 @@ class YieldAgent:
 
 
 if __name__ == "__main__":
-    YieldAgent().run()
+    print("[yield] entrypoint start")
+    try:
+        agent = YieldAgent()
+        print(f"[yield] init ok address={agent.address} connected={agent.w3.is_connected()}")
+        agent.run()
+    except Exception as e:
+        print(f"[yield] fatal startup error: {e}")
+        raise
